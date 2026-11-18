@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="kn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>ಮಂತ್ರ ಮಾಂಗಲ್ಯ | Kuvempu Mantra Mangalya</title>
+  <meta name="description" content="ಕುವೆಂಪು ಅವರ ಮಂತ್ರ ಮಾಂಗಲ್ಯ ವಿವಾಹ ಪದ್ಧತಿ – ವಿವರ, ವಿಧಾನ, ಮಾರ್ಗದರ್ಶನ. Kuvempu's Mantra Mangalya simple wedding – history, procedure and guidance.">
+  <meta name="theme-color" content="#7a1f2b">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Kannada:wght@400;500;700&family=Noto+Serif+Kannada:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script>document.documentElement.className = 'js';</script>
+</head>
+<body>
+  <a class="skip" href="#main" data-i18n="skip">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container bar">
+      <a class="brand" href="#home"><span class="brand-mark">ಮಂ</span><span data-i18n="site_name">ಮಂತ್ರ ಮಾಂಗಲ್ಯ</span></a>
+      <nav id="nav" class="nav" aria-label="Main">
+        <a href="#about" data-i18n="nav_about"></a>
+        <a href="#procedure" data-i18n="nav_procedure"></a>
+        <a href="#guidance" data-i18n="nav_guidance"></a>
+        <a href="#downloads" data-i18n="nav_downloads"></a>
+        <a href="#community" data-i18n="nav_community"></a>
+        <a href="#contact" data-i18n="nav_contact"></a>
+      </nav>
+      <button id="langBtn" class="btn btn-ghost lang-btn" type="button" aria-label="Change language"></button>
+      <button id="menuBtn" class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section id="home" class="hero">
+      <div class="container hero-in">
+        <p class="eyebrow" data-i18n="hero_eyebrow"></p>
+        <h1 data-i18n="hero_title"></h1>
+        <p class="lead" data-i18n="hero_sub"></p>
+        <div class="hero-cta">
+          <a class="btn btn-gold" href="#about" data-i18n="hero_cta1"></a>
+          <a class="btn btn-outline" href="#contact" data-i18n="hero_cta2"></a>
+        </div>
+      </div>
+      <div class="hero-orb o1"></div><div class="hero-orb o2"></div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section">
+      <div class="container">
+        <h2 id="aboutTitle" class="reveal"></h2>
+        <div id="aboutBody" class="prose reveal"></div>
+        <h3 id="principlesTitle" class="sub reveal"></h3>
+        <div id="principles" class="grid cards"></div>
+        <h3 id="historyTitle" class="sub reveal"></h3>
+        <ol id="history" class="timeline"></ol>
+      </div>
+    </section>
+
+    <!-- PROCEDURE -->
+    <section id="procedure" class="section alt">
+      <div class="container">
+        <h2 id="procedureTitle" class="reveal"></h2>
+        <p id="procedureNote" class="muted reveal"></p>
+        <ol id="steps" class="steps"></ol>
+      </div>
+    </section>
+
+    <!-- GUIDANCE -->
+    <section id="guidance" class="section">
+      <div class="container">
+        <h2 id="guidanceTitle" class="reveal"></h2>
+        <p id="guidanceNote" class="muted reveal"></p>
+        <div id="guidanceGrid" class="grid cols3"></div>
+        <h3 id="faqTitle" class="sub reveal"></h3>
+        <div id="faq" class="faq"></div>
+      </div>
+    </section>
+
+    <!-- DOWNLOADS -->
+    <section id="downloads" class="section alt">
+      <div class="container">
+        <h2 class="reveal" data-i18n="dl_title"></h2>
+        <p class="muted reveal" data-i18n="dl_sub"></p>
+        <div id="downloadsBox"></div>
+      </div>
+    </section>
+
+    <!-- COMMUNITY -->
+    <section id="community" class="section">
+      <div class="container">
+        <h2 class="reveal" data-i18n="com_title"></h2>
+        <p class="muted reveal" data-i18n="com_sub"></p>
+        <div id="members" class="grid members"></div>
+
+        <div class="panel reveal" id="joinPanel">
+          <h3 data-i18n="join_title"></h3>
+          <p class="muted" data-i18n="join_sub"></p>
+          <form id="joinForm" class="form" novalidate>
+            <div class="row">
+              <label><span data-i18n="f_name"></span>
+                <input name="name" type="text" required maxlength="80" autocomplete="name"></label>
+              <label><span data-i18n="f_place"></span>
+                <input name="place" type="text" required maxlength="80" autocomplete="address-level2"></label>
+            </div>
+            <div class="row">
+              <label><span data-i18n="f_email"></span>
+                <input name="email" type="email" required maxlength="120" autocomplete="email" inputmode="email"></label>
+              <label><span data-i18n="f_year"></span>
+                <input name="year" type="number" required min="1960" max="2100" inputmode="numeric"></label>
+            </div>
+            <label><span data-i18n="f_phone"></span>
+              <input name="phone" type="tel" maxlength="20" autocomplete="tel" inputmode="tel"></label>
+            <label><span data-i18n="f_story"></span>
+              <textarea name="story" rows="4" maxlength="800"></textarea></label>
+            <label class="check"><input type="checkbox" name="showPublic"><span data-i18n="f_public"></span></label>
+            <label class="check"><input type="checkbox" name="consent" required><span data-i18n="f_consent"></span></label>
+            <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <button class="btn btn-primary" type="submit" data-i18n="join"></button>
+            <p class="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section alt">
+      <div class="container narrow">
+        <h2 class="reveal" data-i18n="con_title"></h2>
+        <p class="muted reveal" data-i18n="con_sub"></p>
+        <div class="panel reveal">
+          <form id="contactForm" class="form" novalidate>
+            <div class="row">
+              <label><span data-i18n="f_name"></span>
+                <input name="name" type="text" required maxlength="80" autocomplete="name"></label>
+              <label><span data-i18n="f_email"></span>
+                <input name="email" type="email" required maxlength="120" autocomplete="email" inputmode="email"></label>
+            </div>
+            <div class="row">
+              <label><span data-i18n="f_phone"></span>
+                <input name="phone" type="tel" maxlength="20" autocomplete="tel" inputmode="tel"></label>
+              <label><span data-i18n="f_place"></span>
+                <input name="place" type="text" maxlength="80" autocomplete="address-level2"></label>
+            </div>
+            <label><span data-i18n="f_topic"></span>
+              <select name="topic">
+                <option value="guidance" data-i18n="topic_guidance"></option>
+                <option value="procedure" data-i18n="topic_procedure"></option>
+                <option value="officiant" data-i18n="topic_officiant"></option>
+                <option value="legal" data-i18n="topic_legal"></option>
+                <option value="other" data-i18n="topic_other"></option>
+              </select></label>
+            <label><span data-i18n="f_message"></span>
+              <textarea name="message" rows="5" required minlength="10" maxlength="2000"></textarea></label>
+            <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <button class="btn btn-primary" type="submit" data-i18n="send"></button>
+            <p class="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p class="brand-line">ಮಂತ್ರ ಮಾಂಗಲ್ಯ · Mantra Mangalya</p>
+      <p data-i18n="footer_note"></p>
+      <p class="muted-light" data-i18n="footer_privacy"></p>
+      <p class="muted-light">© <span id="yr"></span></p>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/content.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

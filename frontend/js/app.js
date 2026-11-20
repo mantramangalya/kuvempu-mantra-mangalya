@@ -6,7 +6,7 @@
   var ROOT = document.body.dataset.root || '';   // '' on home, '../' on sub-pages (clean folder routes)
   var NAV = [
     ['home', '', 'bi-house-heart'], ['about', 'about/', 'bi-book'],
-    ['procedure', 'procedure/', 'bi-list-check'], ['guidance', 'guidance/', 'bi-compass'],
+    ['guidance', 'guidance/', 'bi-compass'],
     ['downloads', 'downloads/', 'bi-download'], ['community', 'community/', 'bi-people'],
     ['contact', 'contact/', 'bi-envelope']
   ];
@@ -29,7 +29,7 @@
     var hdr = $('#app-header'), ftr = $('#app-footer');
     if (hdr) {
       hdr.outerHTML = '<header class="site-header" id="siteHeader"><div class="wrap bar">' +
-        '<a class="brand" href="' + href('') + '" aria-label="Home"><span class="brand-mark"><i class="bi bi-suit-heart-fill"></i></span><span data-i18n="site.name"></span></a>' +
+        '<a class="brand" href="' + href('') + '" aria-label="Home"><img class="brand-logo" src="' + esc(ROOT + (C.LOGO || 'favicon.svg')) + '" alt="" width="40" height="40" onerror="this.onerror=null;this.src=\'' + ROOT + 'favicon.svg\'"><span data-i18n="site.name"></span></a>' +
         '<nav class="nav" id="nav" aria-label="Main">' + NAV.map(function (n) {
           return '<a href="' + href(n[1]) + '" class="' + (n[0] === PAGE ? 'active' : '') + '"' + (n[0] === PAGE ? ' aria-current="page"' : '') + '><i class="bi ' + n[2] + '"></i><span data-i18n="nav.' + n[0] + '"></span></a>';
         }).join('') + '</nav>' +
@@ -47,6 +47,37 @@
         '<div class="foot-quote" data-i18n="foot.quote"></div><p class="copy">© ' + new Date().getFullYear() + ' <span data-i18n="site.name"></span></p></div></footer>' +
         '<button class="to-top" id="toTop" aria-label="Back to top"><i class="bi bi-arrow-up"></i></button>';
     }
+  }
+
+  function setFavicon() {
+    var f = C.LOGO || 'favicon.svg', link = document.querySelector('link[rel="icon"]');
+    if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); }
+    var ext = (f.split('.').pop() || '').toLowerCase();
+    link.type = { svg: 'image/svg+xml', png: 'image/png', ico: 'image/x-icon', webp: 'image/webp', jpg: 'image/jpeg', jpeg: 'image/jpeg' }[ext] || '';
+    if (!link.type) link.removeAttribute('type');
+    link.href = ROOT + f;
+  }
+
+  /* ---------- Great personalities cards (top of every page) ---------- */
+  function initPersonalities() {
+    var list = C.PERSONALITIES || []; if (!list.length) return;
+    var holder = $('.page-hero .wrap'), box = document.createElement('div');
+    box.className = 'pers'; box.id = 'personalities'; box.setAttribute('role', 'list');
+    if (holder) holder.appendChild(box);
+    else {
+      var hero = $('#heroSlider'); if (!hero) return;
+      var band = document.createElement('section'); band.className = 'pers-band';
+      band.innerHTML = '<div class="wrap"></div>'; $('.wrap', band).appendChild(box);
+      hero.insertAdjacentElement('afterend', band);
+    }
+    function draw() {
+      box.innerHTML = list.map(function (p, i) {
+        var src = ROOT + 'images/' + p.img, name = p[lang] || p.kn || p.en || '';
+        return '<figure class="pers-card" role="listitem" style="animation-delay:' + (i * 80) + 'ms" data-full="' + esc(src) + '" data-name="' + esc(p.img) + '" data-dl="' + esc(src) + '" data-local="1" title="' + esc(name) + '">' +
+          '<div class="pers-img"><img src="' + esc(src) + '" alt="' + esc(name) + '" loading="lazy" decoding="async" onerror="var c=this.closest(\'.pers-card\');if(c)c.remove()"></div><figcaption>' + esc(name) + '</figcaption></figure>';
+      }).join('');
+    }
+    draw(); document.addEventListener('mm:lang', draw);
   }
 
   function applyI18n(root) {
@@ -217,16 +248,6 @@
     if (accordion && location.hash) { var a = $(location.hash); if (a && a.classList.contains('acc')) toggle(a, true); }
   }
 
-  /* ---------- FAQ (guidance) ---------- */
-  function initFaq() {
-    var box = $('#faqBox'); if (!box) return;
-    box.innerHTML = [1, 2, 3, 4, 5].map(function (n) {
-      return '<article class="acc reveal"><button class="acc-head" aria-expanded="false"><span class="acc-ic"><i class="bi bi-patch-question"></i></span><span class="acc-title" data-i18n="faq.' + n + '.q"></span><i class="bi bi-chevron-down chev"></i></button><div class="acc-panel"><div class="acc-inner"><div class="acc-body prose"><p data-i18n="faq.' + n + '.a"></p></div></div></div></article>';
-    }).join('');
-    $$('.acc', box).forEach(function (a) { $('.acc-head', a).addEventListener('click', function () { toggle(a); }); });
-    applyI18n(box); observe(box);
-  }
-
   /* ---------- API helpers ---------- */
   function apiGet(action) {
     if (!apiReady()) return Promise.reject(new Error('not-configured'));
@@ -346,10 +367,15 @@
     void mc;
   }
 
+  window.MM = {
+    t: t, lang: function () { return lang; }, esc: esc, $: $, $$: $$, ROOT: ROOT, actions: actions,
+    apiGet: apiGet, cached: cached, apiReady: apiReady, toggle: toggle, observe: observe, applyI18n: applyI18n
+  };
+
   /* ---------- Boot ---------- */
   function boot() {
-    buildLayout(); initChrome(); initViewer(); applyI18n();
-    initSlider(); initAbout(); initFaq(); initDownloads(); initCommunity(); initContact();
+    buildLayout(); setFavicon(); initChrome(); initViewer(); initPersonalities(); applyI18n();
+    initSlider(); initAbout(); initDownloads(); initCommunity(); initContact();
     observe();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();

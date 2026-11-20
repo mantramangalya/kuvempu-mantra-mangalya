@@ -8,5 +8,15 @@ window.MM_CONFIG = {
   INSTAGRAM_URL: "https://www.instagram.com/mantramangalya.maduve",
   FACEBOOK_HANDLE: "mantramangalya.maduve",
   FACEBOOK_URL: "https://www.facebook.com/mantramangalya.maduve",
+  // Logo shown beside the site name AND used as the favicon (file inside /frontend). Replace the file or change the name here.
+  LOGO: "favicon.svg",
+  // Great personalities shown as cards at the top of every page. To add more, add one line (image goes in /frontend/images).
+  PERSONALITIES: [
+    { img: "kuvempu-home.webp", kn: "ಕುವೆಂಪು", en: "Kuvempu" },
+    { img: "tejaswi.webp", kn: "ಪೂರ್ಣಚಂದ್ರ ತೇಜಸ್ವಿ", en: "Poornachandra Tejaswi" },
+    { img: "basavanna.webp", kn: "ಬಸವಣ್ಣ", en: "Basavanna" },
+    { img: "buddha.webp", kn: "ಬುದ್ಧ", en: "Buddha" },
+    { img: "ambedkar.webp", kn: "ಡಾ. ಬಿ. ಆರ್. ಅಂಬೇಡ್ಕರ್", en: "Dr. B. R. Ambedkar" }
+  ],
   BLOG_URL: "https://nammakuvempu.wordpress.com/2021/05/08/kuvempu-mantra-mangalya-wedding/"
 };

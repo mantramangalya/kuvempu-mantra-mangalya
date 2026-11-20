@@ -1,5 +1,8 @@
 {
   "_help": "Add one object per video inside 'videos'. 'url' is required (YouTube, Instagram, Facebook or any link). 'title' and 'description' can be plain text or {\"kn\": \"...\", \"en\": \"...\"}. The platform icon is detected from the URL automatically.",
   "_example": { "title": { "kn": "ಮಂತ್ರ ಮಾಂಗಲ್ಯ ಮದುವೆ", "en": "A Mantra Mangalya wedding" }, "url": "https://www.youtube.com/watch?v=XXXXXXXXXXX", "description": { "kn": "", "en": "" } },
-  "videos": []
+  "videos": [
+    { "title": { "kn": "1. ಮಂತ್ರ ಮಾಂಗಲ್ಯ ಮದುವೆ", "en": "A Mantra Mangalya wedding" }, "url": "https://youtu.be/QjXdD65tUdE?si=Iv8mgWTmFadWbSk9", "description": { "kn": "ಗಿರೀಶ್ ಮತ್ತು ಅನುಷಾ", "en": "Gireesh and Anusha" } },
+    { "title": { "kn": "2. ಮಂತ್ರ ಮಾಂಗಲ್ಯ ಮದುವೆ", "en": "A Mantra Mangalya wedding" }, "url": "https://youtu.be/Gl4QcMmhFsc?si=N6mzo-ZneHFuOan_", "description": { "kn": "", "en": "" } }
+  ]
 }

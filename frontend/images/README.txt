@@ -1,1 +1,1 @@
-Page images use these base names (any format): kuvempu, tejaswi-rajeshwari-maduve, tejaswi-rajeshwari-maduve-invitation, mantra-mangalya-book, kuvempu-home, tejaswi, basavanna, buddha, ambedkar. Sub-folders: mm-logo, hd-photos, sample-mm-invitations, mm-marriage-photos.
+Sub-folders: home-page-images (Home personality cards), about-page-images (About page), mm-logo, hd-photos, sample-mm-invitations, mm-marriage-photos, mm-community-couples. Book PDF goes in frontend/downloads/kuvempu-mantra-mangalya-book.pdf.

@@ -9,6 +9,7 @@
   function pick(o) { if (o == null) return ''; if (typeof o === 'string') return o; return o[M.lang()] || o.kn || o.en || ''; }
   function fmtSize(b) { if (!b) return ''; return b > 1048576 ? (b / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(b / 1024)) + ' KB'; }
   function label(file, cfg) {
+    if (cfg.label) return pick(cfg.label);
     var base = file.replace(/\.[^.]+$/, ''), m = base.match(/(\d+)$/), lbl = cfg.itemLabel ? pick(cfg.itemLabel) : '';
     if (lbl && m) return lbl + ' ' + m[1];
     return base.replace(/[-_]+/g, ' ');
@@ -32,6 +33,7 @@
   function listDir(cfg) {
     var d = window.MM_MANIFEST && window.MM_MANIFEST.dirs && window.MM_MANIFEST.dirs[cfg.dir];
     if (Array.isArray(d)) return Promise.resolve(d);
+    if (cfg.file) return exists(M.ROOT + cfg.dir + '/' + cfg.file).then(function (ok) { return ok ? [{ file: cfg.file }] : []; });
     return cfg.prefix ? probe(cfg) : Promise.resolve([]);
   }
 
@@ -63,7 +65,7 @@
   /* box: element that will hold the grid + pager. kind: 'masonry' | 'cards' */
   function paged(box, items, size, render, kind) {
     var page = 1, pages = Math.max(1, Math.ceil(items.length / size));
-    box.innerHTML = '<div class="' + (kind === 'masonry' ? 'masonry' : 'cards c3') + ' pg-grid"></div><div class="pager pg-nav"></div>';
+    box.innerHTML = '<div class="' + (kind === 'masonry' ? 'masonry' : kind === 'list' ? 'cm-list' : 'cards c3') + ' pg-grid"></div><div class="pager pg-nav"></div>';
     var grid = $('.pg-grid', box), nav = $('.pg-nav', box);
     function draw(scroll) {
       var from = (page - 1) * size, chunk = items.slice(from, from + size);

@@ -61,11 +61,12 @@
 
   /* ---------- Image helpers: any format (png / jpg / webp ...), file-name pattern decides ---------- */
   var EXTS = ['webp', 'jpg', 'jpeg', 'png', 'avif', 'gif', 'svg'], EXT_RE = /\.(webp|jpe?g|png|gif|avif|svg|bmp)$/i;
-  function imgFile(b) {                         // 'kuvempu' or 'kuvempu.webp' -> real file name
-    var raw = String(b), base = raw.replace(EXT_RE, ''), m = (window.MM_MANIFEST && window.MM_MANIFEST.images) || {};
+  function imgDir(d) { return (d || 'images').replace(/\/+$/, ''); }          // e.g. 'images/home-page-images'
+  function imgFile(b, dir) {                    // 'kuvempu' or 'kuvempu.webp' -> real file name inside that folder
+    var raw = String(b), base = raw.replace(EXT_RE, ''), all = (window.MM_MANIFEST && window.MM_MANIFEST.images) || {}, m = all[imgDir(dir)] || {};
     return m[base] || (EXT_RE.test(raw) ? raw : base + '.webp');
   }
-  function imgSrc(b) { return ROOT + 'images/' + imgFile(b); }
+  function imgSrc(b, dir) { return ROOT + imgDir(dir) + '/' + imgFile(b, dir); }
   function imgFail(img) {
     var c = img.closest('.pers-card'); if (c) { c.remove(); return; }
     var f = img.closest('.img-frame'); if (f) { f.classList.add('noimg'); f.removeAttribute('data-full'); }
@@ -73,12 +74,13 @@
   }
   function imgErr(img) {                        // tries the other image extensions, then gives up
     var base = img.getAttribute('data-base'); if (!base) return imgFail(img);
+    var dir = imgDir(img.getAttribute('data-dir'));
     var tried = (img.getAttribute('data-tried') || '').split(',').filter(Boolean), cur = (img.getAttribute('src') || '').split('.').pop().toLowerCase();
     if (tried.indexOf(cur) < 0) tried.push(cur);
     var next = EXTS.filter(function (e) { return tried.indexOf(e) < 0; })[0];
     if (!next) return imgFail(img);
     img.setAttribute('data-tried', tried.join(','));
-    var file = base + '.' + next, url = ROOT + 'images/' + file; img.src = url;
+    var file = base + '.' + next, url = ROOT + dir + '/' + file; img.src = url;
     var h = img.closest('[data-full]');
     if (h) {
       h.dataset.full = url; h.dataset.dl = url; h.dataset.name = file;
@@ -97,9 +99,9 @@
     hero.insertAdjacentElement('afterend', band);
     function draw() {
       box.innerHTML = list.map(function (p, i) {
-        var file = imgFile(p.img), src = ROOT + 'images/' + file, name = p[lang] || p.kn || p.en || '';
+        var dir = imgDir(C.HOME_IMAGES_DIR || 'images/home-page-images'), file = imgFile(p.img, dir), src = ROOT + dir + '/' + file, name = p[lang] || p.kn || p.en || '';
         return '<figure class="pers-card" role="listitem" style="animation-delay:' + (i * 80) + 'ms" data-full="' + esc(src) + '" data-name="' + esc(file) + '" data-dl="' + esc(src) + '" data-local="1" title="' + esc(name) + '">' +
-          '<div class="pers-img"><img src="' + esc(src) + '" data-base="' + esc(String(p.img).replace(EXT_RE, '')) + '" alt="' + esc(name) + '" loading="lazy" decoding="async" onerror="MM.imgErr(this)"></div><figcaption>' + esc(name) + '</figcaption></figure>';
+          '<div class="pers-img"><img src="' + esc(src) + '" data-base="' + esc(String(p.img).replace(EXT_RE, '')) + '" data-dir="' + esc(dir) + '" alt="' + esc(name) + '" loading="lazy" decoding="async" onerror="MM.imgErr(this)"></div><figcaption>' + esc(name) + '</figcaption></figure>';
       }).join('');
     }
     draw(); document.addEventListener('mm:lang', draw);
@@ -180,9 +182,9 @@
       '<a class="ia-btn" data-act="dl" href="' + esc(dl) + '" ' + (local ? 'download="' + esc(name) + '"' : 'target="_blank" rel="noopener"') + ' title="' + d + '" aria-label="' + d + '"><i class="bi bi-download"></i></a></div>';
   }
   function imgBlock(name, alt, cls, cap) {
-    var file = imgFile(name), src = ROOT + 'images/' + file;
+    var dir = imgDir(C.ABOUT_IMAGES_DIR || 'images/about-page-images'), file = imgFile(name, dir), src = ROOT + dir + '/' + file;
     return '<figure class="img-frame ' + (cls || '') + '" data-full="' + esc(src) + '" data-name="' + esc(file) + '" data-dl="' + esc(src) + '" data-local="1">' +
-      '<img src="' + esc(src) + '" data-base="' + esc(String(name).replace(EXT_RE, '')) + '" alt="' + esc(alt) + '" loading="lazy" decoding="async" onerror="MM.imgErr(this)">' +
+      '<img src="' + esc(src) + '" data-base="' + esc(String(name).replace(EXT_RE, '')) + '" data-dir="' + esc(dir) + '" alt="' + esc(alt) + '" loading="lazy" decoding="async" onerror="MM.imgErr(this)">' +
       (cap ? '<figcaption>' + esc(cap) + '</figcaption>' : '') + actions(src, file, true) + '</figure>';
   }
 
@@ -399,7 +401,50 @@
     document.addEventListener('keydown', function (e) { var h = e.target.closest && e.target.closest('.c-head'); if (h && h === e.target && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); flip(h); } });
   }
 
+  /* ---------- Expand all / Collapse all (for .c-sec sections and .acc accordions inside a scope) ---------- */
+  function toggleAll(anchor, where, scopeFn) {
+    var bar = document.createElement('div'); bar.className = 'acc-tools'; bar.innerHTML = '<button type="button" class="btn btn-light"><i class="bi"></i><span></span></button>';
+    anchor.insertAdjacentElement(where, bar);
+    var btn = $('button', bar), ic = $('i', btn), lb = $('span', btn);
+    function items() { var sc = scopeFn(); return sc ? $$('.c-sec,.acc', sc) : []; }
+    function isOpen(x) { return x.classList.contains('acc') ? x.classList.contains('open') : !x.classList.contains('shut'); }
+    function setOpen(x, o) {
+      if (x.classList.contains('acc')) toggle(x, o);
+      else { x.classList.toggle('shut', !o); var h = $('.c-head', x); if (h) h.setAttribute('aria-expanded', o); }
+    }
+    function refresh() {
+      var it = items(); bar.hidden = !it.length;
+      var expand = it.some(function (x) { return !isOpen(x); });
+      btn.dataset.mode = expand ? 'expand' : 'collapse';
+      lb.textContent = t(expand ? 'btn.expand' : 'btn.collapse'); ic.className = 'bi ' + (expand ? 'bi-arrows-expand' : 'bi-arrows-collapse');
+    }
+    btn.addEventListener('click', function () { var o = btn.dataset.mode === 'expand'; items().forEach(function (x) { setOpen(x, o); }); refresh(); });
+    document.addEventListener('click', function () { setTimeout(refresh, 0); });
+    document.addEventListener('mm:lang', function () { setTimeout(refresh, 0); });
+    window.addEventListener('hashchange', function () { setTimeout(refresh, 0); });
+    var root = scopeFn(); var host = root ? (root.parentNode && root.classList.contains('pane') ? root.parentNode : root) : null;
+    if (host && window.MutationObserver) { var tm; new MutationObserver(function () { clearTimeout(tm); tm = setTimeout(refresh, 30); }).observe(host, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden'] }); }
+    refresh(); return bar;
+  }
+  /* Community / Contact: make each titled section collapsible (title bar toggles it) */
+  function makeSectionsCollapsible() {
+    $$('main .block > .wrap').forEach(function (w) {
+      var head = $(':scope > .sec-head', w); if (!head) return;
+      var body = document.createElement('div'); body.className = 'c-body';
+      var n = head.nextSibling; while (n) { var nx = n.nextSibling; body.appendChild(n); n = nx; }
+      w.appendChild(body); w.classList.add('c-sec', 'plain');
+      head.classList.add('c-head'); head.setAttribute('role', 'button'); head.tabIndex = 0; head.setAttribute('aria-expanded', 'true');
+      head.insertAdjacentHTML('beforeend', '<i class="bi bi-chevron-down chev"></i>');
+    });
+  }
+  function initPageToggles() {
+    if (PAGE !== 'community' && PAGE !== 'contact') return;
+    makeSectionsCollapsible();
+    var first = $('main .block > .wrap.c-sec'); if (first) toggleAll(first, 'afterbegin', function () { return $('main'); });
+  }
+
   window.MM = {
+    toggleAll: toggleAll, imgDir: imgDir,
     imgFile: imgFile, imgSrc: imgSrc, imgErr: imgErr, EXT_RE: EXT_RE,
     t: t, lang: function () { return lang; }, esc: esc, $: $, $$: $$, ROOT: ROOT, actions: actions,
     apiGet: apiGet, cached: cached, apiReady: apiReady, toggle: toggle, observe: observe, applyI18n: applyI18n
@@ -407,8 +452,8 @@
 
   /* ---------- Boot ---------- */
   function boot() {
-    buildLayout(); setFavicon(); initChrome(); initViewer(); initCollapsibles(); initPersonalities(); applyI18n();
-    initSlider(); initAbout(); initDownloads(); initCommunity(); initContact();
+    buildLayout(); setFavicon(); initChrome(); initViewer(); initCollapsibles(); initPersonalities(); initPageToggles(); applyI18n();
+    initSlider(); initAbout(); initDownloads(); initContact();
     observe();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();

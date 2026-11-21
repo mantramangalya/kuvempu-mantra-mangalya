@@ -16,6 +16,7 @@
       var el = location.hash && document.getElementById(location.hash.slice(1));
       if (el && el.classList.contains('c-sec')) { el.classList.remove('shut'); M.$('.c-head', el).setAttribute('aria-expanded', 'true'); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
     }
+    M.toggleAll(host, 'beforebegin', function () { return host; });
     host.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div>';
     fetch(M.ROOT + 'data/downloads.config.json').then(function (r) { if (!r.ok) throw 0; return r.json(); }).catch(function () { return { sections: [] }; }).then(function (c) {
       cfg = c;

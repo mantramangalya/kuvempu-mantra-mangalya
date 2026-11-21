@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="kn">
 <head>
+<!-- Google tag -->
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-W94Q4SH7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+</script>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ಮಾರ್ಗದರ್ಶನ | ಕುವೆಂಪು ಮಂತ್ರ ಮಾಂಗಲ್ಯ</title>
@@ -20,16 +28,16 @@
       <div class="g-main">
         <div class="tabs" id="gTabs" role="tablist">
           <button class="tab" id="tabbtn-guidance" data-tab="guidance" role="tab" aria-controls="tab-guidance"><i class="bi bi-compass"></i><span data-i18n="g.tab.guidance"></span></button>
-          <button class="tab" id="tabbtn-code" data-tab="code" role="tab" aria-controls="tab-code"><i class="bi bi-journal-text"></i><span data-i18n="g.tab.code"></span></button>
-          <button class="tab" id="tabbtn-venue" data-tab="venue" role="tab" aria-controls="tab-venue"><i class="bi bi-geo-alt"></i><span data-i18n="g.tab.venue"></span></button>
           <button class="tab" id="tabbtn-gallery" data-tab="gallery" role="tab" aria-controls="tab-gallery"><i class="bi bi-images"></i><span data-i18n="g.tab.gallery"></span></button>
+          <button class="tab" id="tabbtn-plan" data-tab="plan" role="tab" aria-controls="tab-plan"><i class="bi bi-clipboard2-check"></i><span data-i18n="g.tab.plan"></span></button>
+          <button class="tab" id="tabbtn-code" data-tab="code" role="tab" aria-controls="tab-code"><i class="bi bi-journal-text"></i><span data-i18n="g.tab.code"></span></button>
           <button class="tab" id="tabbtn-faq" data-tab="faq" role="tab" aria-controls="tab-faq"><i class="bi bi-patch-question"></i><span data-i18n="g.tab.faq"></span></button>
         </div>
         <div class="panes">
           <section class="pane" id="tab-guidance" role="tabpanel" aria-labelledby="tabbtn-guidance" hidden></section>
-          <section class="pane" id="tab-code" role="tabpanel" aria-labelledby="tabbtn-code" hidden></section>
-          <section class="pane" id="tab-venue" role="tabpanel" aria-labelledby="tabbtn-venue" hidden></section>
           <section class="pane" id="tab-gallery" role="tabpanel" aria-labelledby="tabbtn-gallery" hidden></section>
+          <section class="pane" id="tab-plan" role="tabpanel" aria-labelledby="tabbtn-plan" hidden></section>
+          <section class="pane" id="tab-code" role="tabpanel" aria-labelledby="tabbtn-code" hidden></section>
           <section class="pane" id="tab-faq" role="tabpanel" aria-labelledby="tabbtn-faq" hidden></section>
         </div>
       </div>
@@ -42,6 +50,22 @@
         </div>
       </aside>
     </div>
+  </div></section>
+
+  <section class="block" id="comments" style="padding-top:0"><div class="wrap">
+    <div class="sec-head"><h2 data-i18n="cm.title"></h2></div>
+    <div id="cmList"></div>
+    <h3 class="cm-reply" id="cmReply"><i class="bi bi-reply-fill"></i><span data-i18n="cm.reply"></span></h3>
+    <form class="form-card" id="cmForm" novalidate>
+      <div class="alert ok" id="cmOk" role="status"><i class="bi bi-check-circle-fill"></i><span></span></div>
+      <div class="alert bad" id="cmBad" role="alert"><i class="bi bi-exclamation-triangle-fill"></i><span></span></div>
+      <div class="field" data-k="name"><label for="cm-name"><span data-i18n="cm.name"></span> <span class="req">*</span></label>
+        <input id="cm-name" type="text" maxlength="30" autocomplete="name"><div class="err" role="alert"></div></div>
+      <div class="field" data-k="text"><label for="cm-text"><span data-i18n="cm.comment"></span> <span class="req">*</span></label>
+        <textarea id="cm-text" maxlength="500" data-i18n-placeholder="cm.ph"></textarea><div class="hint" id="cm-cnt">0/500</div><div class="err" role="alert"></div></div>
+      <input class="hp" id="cm-website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="btn btn-primary" id="cmSubmit" type="submit" style="width:100%"><i class="bi bi-send-fill"></i><span data-i18n="cm.submit"></span></button>
+    </form>
   </div></section>
 </main>
 <div id="app-footer"></div>

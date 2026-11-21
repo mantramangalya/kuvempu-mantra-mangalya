@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="kn">
 <head>
+<!-- Google tag -->
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-W94Q4SH7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+</script>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ಸಮುದಾಯ | ಕುವೆಂಪು ಮಂತ್ರ ಮಾಂಗಲ್ಯ</title>
@@ -16,20 +24,17 @@
 <main id="main">
   <section class="page-hero"><span class="float f1"></span><span class="float f2"></span><div class="wrap"><div class="ic"><i class="bi bi-people"></i></div><h1 data-i18n="nav.community"></h1><p data-i18n="ph.community"></p></div></section>
   <section class="block"><div class="wrap">
+    <p class="com-intro" data-i18n="com.intro"></p>
     <div class="sec-head"><h2 data-i18n="com.gallery"></h2></div>
-    <div id="photoGrid"></div>
+    <div id="coupleGrid"></div>
   </div></section>
   <section class="block" style="padding-top:0"><div class="wrap">
-    <div class="sec-head"><h2 data-i18n="com.stories"></h2></div>
-    <div class="cards c3">
-      <div class="card reveal"><div class="ic"><i class="bi bi-chat-quote"></i></div><p data-i18n="soon.detail"></p><span class="soon" data-i18n="soon"></span></div>
-      <div class="card reveal"><div class="ic"><i class="bi bi-chat-quote"></i></div><p data-i18n="soon.detail"></p><span class="soon" data-i18n="soon"></span></div>
-      <div class="card reveal"><div class="ic"><i class="bi bi-chat-quote"></i></div><p data-i18n="soon.detail"></p><span class="soon" data-i18n="soon"></span></div>
-    </div>
+    <div class="sec-head"><h2 data-i18n="com.says"></h2></div>
+    <div id="saysBox"></div>
   </div></section>
   <section class="block" style="padding-top:0"><div class="wrap"><div class="cta-band reveal">
-    <h2 data-i18n="com.share"></h2><p data-i18n="com.share.t"></p>
-    <a class="btn btn-light" href="../contact/"><i class="bi bi-envelope-heart"></i><span data-i18n="nav.contact"></span></a>
+    <h2 data-i18n="com.join.title"></h2><p data-i18n="com.join.text"></p>
+    <button type="button" class="btn btn-light" id="joinBtn"><i class="bi bi-people-fill"></i><span data-i18n="com.join.btn"></span></button>
   </div></div></section>
 </main>
 <div id="app-footer"></div>
@@ -37,5 +42,7 @@
 <script src="../data/manifest.js"></script>
 <script src="../js/i18n.js"></script>
 <script src="../js/app.js"></script>
+<script src="../js/browse.js"></script>
+<script src="../js/community.js"></script>
 </body>
 </html>

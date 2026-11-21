@@ -3,7 +3,7 @@
    - To add an FAQ later: append one object to MM_FAQ below. */
 (function () {
   var kn = {
-    "g.tab.guidance": "ಮಾರ್ಗದರ್ಶನ", "g.tab.code": "ವಿವಾಹ ಸಂಹಿತೆ", "g.tab.venue": "ಮದುವೆ ಸ್ಥಳ", "g.tab.gallery": "ಫೋಟೋ ಗ್ಯಾಲರಿ", "g.tab.faq": "ಪ್ರಶ್ನೋತ್ತರ",
+    "g.tab.guidance": "ಮಾರ್ಗದರ್ಶನ", "g.tab.code": "ವಿವಾಹ ಸಂಹಿತೆ", "g.tab.plan": "ಯೋಜನೆ", "p.venue": "ಮದುವೆ ಸ್ಥಳ", "p.guests": "ಅತಿಥಿಗಳ ಪಟ್ಟಿ", "p.expense": "ವೆಚ್ಚದ ಅಂದಾಜು", "g.tab.gallery": "ಫೋಟೋ ಗ್ಯಾಲರಿ", "g.tab.faq": "ಪ್ರಶ್ನೋತ್ತರ",
     "g.ask.title": "ಏನಾದರೂ ಸಹಾಯ ಬೇಕೇ?", "g.ask.text": "ನಿಮ್ಮ ಸಂದೇಹಗಳನ್ನು ನಮಗೆ ಕಳುಹಿಸಿ — ನಾವು ಸಹಾಯ ಮಾಡುತ್ತೇವೆ.",
     "code.bg": "ಹಿನ್ನೆಲೆ", "code.dl.title": "ವಿವಾಹ ಸಂಹಿತೆಯ ಸಂಪೂರ್ಣ ಪಠ್ಯ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ", "code.dl.word": "Word (.docx)", "code.dl.pdf": "PDF",
     "code.pdf.note": "PDF ಗಾಗಿ ತೆರೆಯುವ ಮುದ್ರಣ ವಿಂಡೋದಲ್ಲಿ “Save as PDF” ಆಯ್ಕೆಮಾಡಿ.", "code.read": "ಸಂಹಿತೆಯ ಪಠ್ಯ",
@@ -11,10 +11,13 @@
     "v.district": "ಜಿಲ್ಲೆ", "v.venue": "ಸ್ಥಳ", "v.address": "ವಿಳಾಸ", "v.contact": "ಸಂಪರ್ಕ ವಿವರಗಳು", "v.all": "ಎಲ್ಲಾ ಜಿಲ್ಲೆಗಳು", "v.search": "ಹುಡುಕಿ…", "v.sort": "ವಿಂಗಡಣೆ", "v.rows": "ಪುಟಕ್ಕೆ", "v.showing": "ತೋರಿಸಲಾಗುತ್ತಿದೆ", "v.of": "/", "v.prev": "ಹಿಂದಿನ", "v.next": "ಮುಂದಿನ",
     "v.none": "ಹುಡುಕಾಟಕ್ಕೆ ಹೊಂದುವ ಸ್ಥಳಗಳಿಲ್ಲ.", "v.empty": "ಸ್ಥಳಗಳ ಪಟ್ಟಿಯನ್ನು ಶೀಘ್ರದಲ್ಲೇ ಸೇರಿಸಲಾಗುವುದು.", "v.error": "ಸ್ಥಳಗಳನ್ನು ಲೋಡ್ ಮಾಡಲಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ನಂತರ ಪ್ರಯತ್ನಿಸಿ.", "v.notconf": "ಬ್ಯಾಕ್‌ಎಂಡ್ ಇನ್ನೂ ಸಂಪರ್ಕಿಸಲಾಗಿಲ್ಲ.",
     "s.videos": "ವೀಡಿಯೊಗಳು", "s.photos": "ಫೋಟೋಗಳು", "s.na": "ಲಭ್ಯವಿಲ್ಲ", "s.more": "ಇನ್ನಷ್ಟು ತೋರಿಸಿ", "s.watch": "ವೀಕ್ಷಿಸಿ", "s.video": "ವೀಡಿಯೊ", "s.loading": "ಲೋಡ್ ಆಗುತ್ತಿದೆ…",
+    "cm.title": "ಓದುಗರ ಅಭಿಪ್ರಾಯಗಳು", "cm.reply": "ಪ್ರತಿಕ್ರಿಯೆ ನೀಡಿ", "cm.name": "ಹೆಸರು", "cm.comment": "ನಿಮ್ಮ ಅಭಿಪ್ರಾಯ / ಪ್ರಶ್ನೆ", "cm.ph": "ನಿಮ್ಮ ಅಭಿಪ್ರಾಯ, ಯೋಚನೆ ಅಥವಾ ಪ್ರಶ್ನೆಯನ್ನು ಇಲ್ಲಿ ಬರೆಯಿರಿ…", "cm.submit": "ಕಳುಹಿಸಿ", "cm.sending": "ಕಳುಹಿಸಲಾಗುತ್ತಿದೆ…",
+    "cm.none": "ಇನ್ನೂ ಯಾವುದೇ ಅಭಿಪ್ರಾಯಗಳಿಲ್ಲ. ಮೊದಲಿಗರಾಗಿ ಬರೆಯಿರಿ!", "cm.ok": "ಧನ್ಯವಾದಗಳು! ನಿಮ್ಮ ಅಭಿಪ್ರಾಯ ಸ್ವೀಕರಿಸಲಾಗಿದೆ; ಅನುಮೋದನೆಯ ನಂತರ ಇಲ್ಲಿ ಕಾಣಿಸುತ್ತದೆ.", "cm.fail": "ಕ್ಷಮಿಸಿ, ಕಳುಹಿಸಲಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ನಂತರ ಪ್ರಯತ್ನಿಸಿ.", "cm.notconf": "ಸರ್ವರ್ ಇನ್ನೂ ಸಂಪರ್ಕಗೊಂಡಿಲ್ಲ.",
+    "cm.e.req": "ಇದು ಕಡ್ಡಾಯ.", "cm.e.name": "ಹೆಸರು 3 ರಿಂದ 30 ಅಕ್ಷರಗಳಿರಬೇಕು.", "cm.e.chars": "ಅಕ್ಷರಗಳು ಮತ್ತು ಖಾಲಿ ಜಾಗ ಮಾತ್ರ ಅನುಮತಿ; ವಿಶೇಷ ಚಿಹ್ನೆಗಳು ಬೇಡ.", "cm.e.text": "ಅಭಿಪ್ರಾಯ 3 ರಿಂದ 500 ಅಕ್ಷರಗಳಿರಬೇಕು.",
     "g.faq.intro": "ಸಾಮಾನ್ಯವಾಗಿ ಕೇಳುವ ಪ್ರಶ್ನೆಗಳು"
   };
   var en = {
-    "g.tab.guidance": "Guidance", "g.tab.code": "Marriage Code", "g.tab.venue": "Marriage Venue", "g.tab.gallery": "Photo Gallery", "g.tab.faq": "FAQ",
+    "g.tab.guidance": "Guidance", "g.tab.code": "Marriage Code", "g.tab.plan": "Plan", "p.venue": "Marriage Venue", "p.guests": "Guest List", "p.expense": "Expense Projection", "g.tab.gallery": "Photo Gallery", "g.tab.faq": "FAQ",
     "g.ask.title": "Need any help?", "g.ask.text": "Send us your questions — we are happy to help.",
     "code.bg": "Background", "code.dl.title": "Download the full Marriage Code", "code.dl.word": "Word (.docx)", "code.dl.pdf": "PDF",
     "code.pdf.note": "In the print window that opens, choose “Save as PDF”.", "code.read": "Text of the Code",
@@ -22,6 +25,9 @@
     "v.district": "District", "v.venue": "Venue", "v.address": "Address", "v.contact": "Contact Details", "v.all": "All districts", "v.search": "Search…", "v.sort": "Sort by", "v.rows": "Per page", "v.showing": "Showing", "v.of": "of", "v.prev": "Previous", "v.next": "Next",
     "v.none": "No venues match your search.", "v.empty": "The list of venues will be added soon.", "v.error": "Could not load venues. Please try again later.", "v.notconf": "Backend is not connected yet.",
     "s.videos": "Videos", "s.photos": "Photos", "s.na": "Not available", "s.more": "Show more", "s.watch": "Watch", "s.video": "Video", "s.loading": "Loading…",
+    "cm.title": "Reader comments", "cm.reply": "Leave a Reply", "cm.name": "Name", "cm.comment": "Your comment / question", "cm.ph": "Write your comment, thoughts or question here…", "cm.submit": "Submit", "cm.sending": "Sending…",
+    "cm.none": "No comments yet. Be the first to write one!", "cm.ok": "Thank you! Your comment has been received and will appear here after approval.", "cm.fail": "Sorry, we could not submit it. Please try again later.", "cm.notconf": "Backend is not connected yet.",
+    "cm.e.req": "This field is required.", "cm.e.name": "Name must be 3 to 30 characters.", "cm.e.chars": "Only letters and spaces are allowed; no special characters.", "cm.e.text": "Comment must be 3 to 500 characters.",
     "g.faq.intro": "Frequently asked questions"
   };
   Object.keys(kn).forEach(function (k) { window.MM_I18N.kn[k] = kn[k]; });
@@ -31,12 +37,6 @@
 /* ---------------- Guidance tab ----------------
    link: {tab:'venue'} -> opens another tab, {page:'community'} -> opens a page */
 window.MM_GUIDE = {
-  highlights: [
-    { icon: "bi-ban", kn: "ವರದಕ್ಷಿಣೆ ಇಲ್ಲ", en: "No dowry" },
-    { icon: "bi-person-x", kn: "ಪುರೋಹಿತರು ಬೇಡ", en: "No priests" },
-    { icon: "bi-clock-history", kn: "ಎಲ್ಲಾ ಕಾಲವೂ ಶುಭ", en: "Every time is auspicious" },
-    { icon: "bi-people", kn: "ಸುಮಾರು 200 ಅತಿಥಿಗಳ ಮಿತಿ", en: "About 200 guests ideal" }
-  ],
   phases: [
     {
       id: "before", icon: "bi-clipboard2-heart", style: "cards",
@@ -209,11 +209,11 @@ window.MM_FAQ = [
     a: { kn: "ಲೋಗೋ ಚಿತ್ರಗಳು ಡೌನ್‌ಲೋಡ್‌ಗಳ ಪುಟದ “ಮಂತ್ರ ಮಾಂಗಲ್ಯ ಲೋಗೋ” ವಿಭಾಗದಲ್ಲಿ ಲಭ್ಯ. ಆಮಂತ್ರಣ ಪತ್ರಿಕೆ ಅಥವಾ ವೇದಿಕೆಯ ಬ್ಯಾನರ್‌ಗೆ ಅದನ್ನು ಬಳಸಬಹುದು.", en: "Logo images are in the “Mantra Mangalya Logo” section of the Downloads page. You can use it on your invitation or stage banner." },
     links: [{ to: "downloads/#logo", kn: "ಲೋಗೋ ಡೌನ್‌ಲೋಡ್", en: "Download the logo" }] },
   { q: { kn: "ಬ್ಯಾನರ್ ಅಥವಾ ಫೋಟೋ ಫ್ರೇಮ್‌ಗೆ ಕುವೆಂಪು, ತೇಜಸ್ವಿ ಮೊದಲಾದವರ HD ಚಿತ್ರಗಳು ಎಲ್ಲಿ ಸಿಗುತ್ತವೆ?", en: "Where can I get HD photos of Kuvempu, Tejaswi and others for banners or photo frames?" },
-    a: { kn: "ಡೌನ್‌ಲೋಡ್‌ಗಳ ಪುಟದ “ವ್ಯಕ್ತಿ ಚಿತ್ರಗಳು (HD)” ವಿಭಾಗದಲ್ಲಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಬಹುದು. ಇನ್ನೂ ಉತ್ತಮ ಗುಣಮಟ್ಟದ ಚಿತ್ರಗಳು ಬೇಕಿದ್ದರೆ ನಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಿ.", en: "Download them from the “Person Photos (HD)” section of the Downloads page. If you need even higher-quality photos, please contact us." },
-    links: [{ to: "downloads/#photos", kn: "HD ಚಿತ್ರಗಳು", en: "HD photos" }, { to: "contact/", kn: "ನಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಿ", en: "Contact us" }] },
+    a: { kn: "ಡೌನ್‌ಲೋಡ್‌ಗಳ ಪುಟದ “ವ್ಯಕ್ತಿ ಚಿತ್ರಗಳು” ವಿಭಾಗದಲ್ಲಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಬಹುದು. ಇನ್ನೂ ಉತ್ತಮ ಗುಣಮಟ್ಟದ ಚಿತ್ರಗಳು ಬೇಕಿದ್ದರೆ ನಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಿ.", en: "Download them from the “Person Photos” section of the Downloads page. If you need even higher-quality photos, please contact us." },
+    links: [{ to: "downloads/#photos", kn: "ವ್ಯಕ್ತಿ ಚಿತ್ರಗಳು", en: "Person photos" }, { to: "contact/", kn: "ನಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಿ", en: "Contact us" }] },
   { q: { kn: "ಮದುವೆಗೆ ಯಾವ ಸ್ಥಳ ಆರಿಸಬಹುದು?", en: "What venue can I choose?" },
-    a: { kn: "ಕಡಿಮೆ ಬಾಡಿಗೆಯ ಯಾವುದೇ ಸ್ಥಳ ಸಾಕು — ಮರದ ಕೆಳಗೆ, ಕುಪ್ಪಳ್ಳಿ ಕವಿಮನೆ, ಸಣ್ಣ ಸಭಾಂಗಣ ಅಥವಾ ನಿಮ್ಮ ಮನೆ. ಜಿಲ್ಲೆವಾರು ಕಡಿಮೆ ಖರ್ಚಿನ ಸ್ಥಳಗಳ ಪಟ್ಟಿ “ಮದುವೆ ಸ್ಥಳ” ಟ್ಯಾಬ್‌ನಲ್ಲಿದೆ.", en: "Any low-rent place will do — under a tree, Kuppali Kavimane, a small hall or your home. A district-wise list of low-cost venues is in the “Marriage Venue” tab." },
-    links: [{ to: "guidance/#venue", kn: "ಮದುವೆ ಸ್ಥಳಗಳ ಪಟ್ಟಿ", en: "Marriage venue list" }] },
+    a: { kn: "ಕಡಿಮೆ ಬಾಡಿಗೆಯ ಯಾವುದೇ ಸ್ಥಳ ಸಾಕು — ಮರದ ಕೆಳಗೆ, ಕುಪ್ಪಳ್ಳಿ ಕವಿಮನೆ, ಸಣ್ಣ ಸಭಾಂಗಣ ಅಥವಾ ನಿಮ್ಮ ಮನೆ. ಜಿಲ್ಲೆವಾರು ಕಡಿಮೆ ಖರ್ಚಿನ ಸ್ಥಳಗಳ ಪಟ್ಟಿ “ಯೋಜನೆ” ಟ್ಯಾಬ್‌ನ “ಮದುವೆ ಸ್ಥಳ” ವಿಭಾಗದಲ್ಲಿದೆ.", en: "Any low-rent place will do — under a tree, Kuppali Kavimane, a small hall or your home. A district-wise list of low-cost venues is in the “Marriage Venue” section of the “Plan” tab." },
+    links: [{ to: "guidance/#plan", kn: "ಮದುವೆ ಸ್ಥಳಗಳ ಪಟ್ಟಿ", en: "Marriage venue list" }] },
   { q: { kn: "ಎಷ್ಟು ಅತಿಥಿಗಳನ್ನು ಆಹ್ವಾನಿಸಬಹುದು?", en: "How many guests can we invite?" },
     a: { kn: "ಸುಮಾರು 200 ಒಳಗೆ ಇದ್ದರೆ ಉತ್ತಮ. ಹೆಚ್ಚಿದ್ದರೂ ಅಡ್ಡಿಯಿಲ್ಲ, ಆದರೆ ಅಲಂಕಾರ ಮತ್ತು ಇತರ ಖರ್ಚುಗಳನ್ನು ಕನಿಷ್ಠವಾಗಿಡಿ. ಮೊದಲ ಮಂತ್ರ ಮಾಂಗಲ್ಯ ಮದುವೆಯಲ್ಲಿ ಕೇವಲ 30–40 ಮಂದಿ ಇದ್ದರು.", en: "Ideally within about 200. More is fine as long as decoration and other expenses stay minimal. The first Mantra Mangalya wedding had only 30–40 guests." },
     links: [{ to: "guidance/#guidance", kn: "ಸಿದ್ಧತೆಯ ಹಂತಗಳು", en: "Preparation steps" }] },
@@ -228,7 +228,7 @@ window.MM_FAQ = [
     a: { kn: "ಬಂದವರಿಗೆಲ್ಲ ಒಳ್ಳೆಯ, ಸರಳ ಊಟ ನೀಡಿ. ಮೆನು ನಿಮ್ಮ ಆಯ್ಕೆ; ಆಶಯ ಸರಳತೆ. ಮೊದಲ ಮಂತ್ರ ಮಾಂಗಲ್ಯ ಮದುವೆಯಲ್ಲಿ ಮಾಂಸಾಹಾರ ಊಟ ನೀಡಲಾಗಿತ್ತು.", en: "Serve nice, simple food to everyone who came. The menu is your choice; the ideal is simplicity. A non-vegetarian meal was served at the first Mantra Mangalya wedding." } },
   { q: { kn: "ವೇದಿಕೆಯಲ್ಲಿ ಯಾವ ಭಾವಚಿತ್ರಗಳನ್ನು ಇಡಬಹುದು?", en: "Which portraits can be kept on the stage?" },
     a: { kn: "ಕುವೆಂಪು, ಬಸವಣ್ಣ, ಪೂರ್ಣಚಂದ್ರ ತೇಜಸ್ವಿ, ಅಂಬೇಡ್ಕರ್, ಬುದ್ಧ ಮೊದಲಾದ ಮಹನೀಯರ ಭಾವಚಿತ್ರಗಳನ್ನು ಇಡಬಹುದು. HD ಚಿತ್ರಗಳು ಡೌನ್‌ಲೋಡ್‌ಗಳ ಪುಟದಲ್ಲಿವೆ.", en: "Portraits of great personalities such as Kuvempu, Basavanna, Poornachandra Tejaswi, Ambedkar and Buddha. HD photos are on the Downloads page." },
-    links: [{ to: "downloads/#photos", kn: "HD ಚಿತ್ರಗಳು", en: "HD photos" }] },
+    links: [{ to: "downloads/#photos", kn: "ವ್ಯಕ್ತಿ ಚಿತ್ರಗಳು", en: "Person photos" }] },
   { q: { kn: "ಮಂತ್ರ ಮಾಂಗಲ್ಯ ಮದುವೆಯ ವೀಡಿಯೊ, ಫೋಟೋಗಳನ್ನು ಎಲ್ಲಿ ನೋಡಬಹುದು?", en: "Where can I see videos and photos of Mantra Mangalya weddings?" },
     a: { kn: "“ಫೋಟೋ ಗ್ಯಾಲರಿ” ಟ್ಯಾಬ್‌ನಲ್ಲಿ ವೀಡಿಯೊಗಳು ಮತ್ತು ಮದುವೆಯ ಫೋಟೋಗಳಿವೆ.", en: "The “Photo Gallery” tab has videos and wedding photos." },
     links: [{ to: "guidance/#gallery", kn: "ಫೋಟೋ ಗ್ಯಾಲರಿ", en: "Photo Gallery" }] },

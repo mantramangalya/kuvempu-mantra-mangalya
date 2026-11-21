@@ -5,14 +5,14 @@
     var M = window.MM;
     if (!M || !document.getElementById('gTabs')) return;
     var t = M.t, esc = M.esc, $ = M.$, $$ = M.$$;
-    var TABS = ['guidance', 'code', 'venue', 'gallery', 'faq'];
+    var TABS = ['guidance', 'gallery', 'plan', 'code', 'faq'];
     var inited = {}, firstShow = true;
 
     function L() { return M.lang(); }
     function pick(o) { if (o == null) return ''; if (typeof o === 'string') return o; return o[L()] || o.kn || o.en || ''; }
 
     /* ---------- tabs ---------- */
-    function current() { var h = (location.hash || '').slice(1); if (h === 'samples') h = 'gallery'; return TABS.indexOf(h) > -1 ? h : 'guidance'; }
+    function current() { var h = (location.hash || '').slice(1); if (h === 'samples') h = 'gallery'; if (h === 'venue') h = 'plan'; return TABS.indexOf(h) > -1 ? h : 'guidance'; }
     function show(tab, scroll) {
       TABS.forEach(function (k) {
         var on = k === tab, b = $('#tabbtn-' + k), p = $('#tab-' + k);
@@ -41,8 +41,7 @@
 
     /* ---------- 1. Guidance ---------- */
     function renderGuide() {
-      var G = window.MM_GUIDE, l = L();
-      var h = '<div class="hl-row">' + G.highlights.map(function (x) { return '<div class="hl"><i class="bi ' + x.icon + '"></i><span>' + esc(x[l]) + '</span></div>'; }).join('') + '</div>';
+      var G = window.MM_GUIDE, l = L(), h = '';
       h += G.phases.map(function (p, n) {
         var body;
         if (p.style === 'flow') {
@@ -101,6 +100,15 @@
       M.apiGet('venues').then(function (j) { V.rows = (j.venues || []).map(normVenue); V.state = 'ok'; drawVenue(true); })
         .catch(function (e) { if (!V.rows) { V.state = e.message === 'not-configured' ? 'nc' : 'err'; } drawVenue(true); });
     }
+    function soonBox() { return '<div class="placeholder-box"><i class="bi bi-hourglass-split"></i><b>' + esc(t('soon')) + '</b><br>' + esc(t('soon.detail')) + '</div>'; }
+    function renderPlan() {
+      var Bw = window.MM_BROWSE, host = $('#tab-plan');
+      var shut = $$('#tab-plan .c-sec.shut').map(function (x) { return x.id; });
+      host.innerHTML = Bw.shell('plan-venue', 'bi-geo-alt-fill', t('p.venue'), null, '<div id="venueBody"></div>') +
+        Bw.shell('plan-guests', 'bi-people-fill', t('p.guests'), null, soonBox()) +
+        Bw.shell('plan-expense', 'bi-cash-coin', t('p.expense'), null, soonBox());
+      shut.forEach(function (id) { var x = document.getElementById(id); if (x) { x.classList.add('shut'); $('.c-head', x).setAttribute('aria-expanded', 'false'); } });
+    }
     function venueShell() {
       var districts = [];
       (V.rows || []).forEach(function (r) { if (r.district && districts.indexOf(r.district) < 0) districts.push(r.district); });
@@ -110,7 +118,7 @@
         '<select id="vD" aria-label="' + esc(t('v.district')) + '"><option value="">' + esc(t('v.all')) + '</option>' + districts.map(function (d) { return '<option' + (d === V.district ? ' selected' : '') + ' value="' + esc(d) + '">' + esc(d) + '</option>'; }).join('') + '</select>' +
         '</div>' +
         '<div id="vOut"></div>';
-      $('#tab-venue').innerHTML = h;
+      $('#venueBody').innerHTML = h;
       $('#vQ').addEventListener('input', function (e) { V.q = e.target.value.trim().toLowerCase(); V.page = 1; drawVenue(); });
       $('#vD').addEventListener('change', function (e) { V.district = e.target.value; V.page = 1; drawVenue(); });
       V.q = V.q || '';
@@ -120,6 +128,7 @@
       return out;
     }
     function drawVenue(rebuild) {
+      if (!$('#venueBody')) return;
       if (rebuild || !$('#vOut')) venueShell();
       var out = $('#vOut');
       if (V.state === 'loading') { out.innerHTML = '<div class="skeleton"></div>'; return; }
@@ -144,7 +153,7 @@
         '<label class="pg-size">' + esc(t('v.rows')) + ' <select id="vSize">' + [10, 25, 50].map(function (n) { return '<option' + (n === V.size ? ' selected' : '') + '>' + n + '</option>'; }).join('') + '</select></label></div>';
       out.innerHTML = h;
       $$('#vOut th button').forEach(function (b) { b.addEventListener('click', function () { if (V.key === b.dataset.k) V.dir *= -1; else { V.key = b.dataset.k; V.dir = 1; } drawVenue(); }); });
-      $$('#vOut .pg-btns button').forEach(function (b) { b.addEventListener('click', function () { V.page = +b.dataset.p; drawVenue(); $('#tab-venue').scrollIntoView({ behavior: 'smooth', block: 'start' }); }); });
+      $$('#vOut .pg-btns button').forEach(function (b) { b.addEventListener('click', function () { V.page = +b.dataset.p; drawVenue(); $('#plan-venue').scrollIntoView({ behavior: 'smooth', block: 'start' }); }); });
       $('#vSize').addEventListener('change', function (e) { V.size = +e.target.value; V.page = 1; drawVenue(); });
     }
 
@@ -196,7 +205,7 @@
 
     var INIT = {
       guidance: renderGuide, code: renderCode, faq: renderFaq,
-      venue: function () { loadVenues(); drawVenue(true); },
+      plan: function () { renderPlan(); loadVenues(); drawVenue(true); },
       gallery: loadGallery
     };
 
@@ -204,11 +213,62 @@
       if (inited.guidance) renderGuide();
       if (inited.code) renderCode();
       if (inited.faq) renderFaq();
-      if (inited.venue) drawVenue(true);
+      if (inited.plan) { renderPlan(); drawVenue(true); }
       if (inited.gallery && S.videos !== undefined) drawGallery();
     });
 
+    /* ---------- Comments + Leave a Reply (backend sheet "Comments"; only approved comments are returned) ---------- */
+    (function comments() {
+      var B = window.MM_BROWSE, C = window.MM_CONFIG, list = null, state = 'loading', busy = false;
+      function drawList() {
+        var box = $('#cmList'); if (!box) return;
+        if (state === 'loading') { box.innerHTML = '<div class="skeleton" style="min-height:90px"></div>'; return; }
+        if (!list || !list.length) { box.innerHTML = '<div class="placeholder-box"><i class="bi bi-chat-square-heart"></i>' + esc(t('cm.none')) + '</div>'; return; }
+        B.paged(box, list, 5, function (c) {
+          return '<article class="cm"><span class="cm-av"><i class="bi bi-person-circle"></i></span><div class="cm-b"><div class="cm-h"><b>' + esc(c.name) + '</b>' + (c.date ? '<small><i class="bi bi-clock"></i> ' + esc(c.date) + '</small>' : '') + '</div><p><i class="bi bi-chat-quote-fill"></i>' + esc(c.comment).replace(/\n/g, '<br>') + '</p></div></article>';
+        }, 'list');
+      }
+      function load(j) { list = (j.comments || []).filter(function (c) { return c && c.comment; }); state = 'ok'; drawList(); }
+      var c0 = M.cached('comments'); if (c0) load(c0); else drawList();
+      M.apiGet('comments').then(load).catch(function () { if (state === 'loading') { state = 'err'; drawList(); } });
+      document.addEventListener('mm:lang', function () { drawList(); $$('#cmForm .err').forEach(function (m) { if (m.dataset.key) m.textContent = t(m.dataset.key); }); });
+
+      var f = $('#cmForm'); if (!f) return;
+      var NAME_RE = /^[\p{L}\p{M} ]+$/u;
+      var V = {
+        name: function () { var v = $('#cm-name').value.trim(); return !v ? 'cm.e.req' : (v.length < 3 || v.length > 30) ? 'cm.e.name' : NAME_RE.test(v) ? '' : 'cm.e.chars'; },
+        text: function () { var v = $('#cm-text').value.trim(); return !v ? 'cm.e.req' : (v.length < 3 || v.length > 500) ? 'cm.e.text' : ''; }
+      };
+      function check(k) { var w = $('.field[data-k="' + k + '"]', f), key = V[k](), m = $('.err', w); w.classList.toggle('invalid', !!key); m.dataset.key = key; m.textContent = key ? t(key) : ''; return !key; }
+      [['name', '#cm-name'], ['text', '#cm-text']].forEach(function (p) {
+        var el = $(p[1]); el.addEventListener('blur', function () { check(p[0]); });
+        el.addEventListener('input', function () { if (el.closest('.field').classList.contains('invalid')) check(p[0]); if (p[0] === 'text') $('#cm-cnt').textContent = el.value.length + '/500'; });
+      });
+      var ok = $('#cmOk'), bad = $('#cmBad'), btn = $('#cmSubmit');
+      function setBusy(b) { busy = b; btn.disabled = b; btn.innerHTML = b ? '<span class="spin"></span><span>' + esc(t('cm.sending')) + '</span>' : '<i class="bi bi-send-fill"></i><span>' + esc(t('cm.submit')) + '</span>'; }
+      f.addEventListener('submit', function (e) {
+        e.preventDefault(); if (busy) return; ok.classList.remove('show'); bad.classList.remove('show');
+        if (!Object.keys(V).map(check).every(Boolean)) { var first = $('.field.invalid input,.field.invalid textarea', f); if (first) first.focus(); return; }
+        if ($('#cm-website').value) return;                               // honeypot
+        if (!M.apiReady()) { $('span', bad).textContent = t('cm.notconf'); bad.classList.add('show'); return; }
+        setBusy(true);
+        fetch(C.API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, redirect: 'follow',
+          body: JSON.stringify({ type: 'comment', 'Name': $('#cm-name').value.trim(), 'User Comment': $('#cm-text').value.trim(), lang: L() }) })
+          .then(function (r) { return r.json(); })
+          .then(function (j) {
+            if (!j || !j.ok) throw new Error('api');
+            f.reset(); $('#cm-cnt').textContent = '0/500'; $$('.field', f).forEach(function (w) { w.classList.remove('invalid'); });
+            $('span', ok).textContent = t('cm.ok'); ok.classList.add('show'); ok.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          })
+          .catch(function () { $('span', bad).textContent = t('cm.fail'); bad.classList.add('show'); })
+          .then(function () { setBusy(false); });
+      });
+    })();
+
     show(current(), false);
+
+    /* ---------- Expand all / Collapse all for the open tab ---------- */
+    M.toggleAll($('.panes'), 'beforebegin', function () { return $('.pane:not([hidden])'); });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();

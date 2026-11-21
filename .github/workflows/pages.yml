@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
-      - name: Build file manifest for Samples tab
+      - name: Build file manifest (Downloads + Photo Gallery)
         run: python3 scripts/build-manifest.py
       - uses: actions/upload-pages-artifact@v3
         with:

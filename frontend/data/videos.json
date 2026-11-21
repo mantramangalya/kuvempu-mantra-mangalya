@@ -2,7 +2,12 @@
   "_help": "Add one object per video inside 'videos'. 'url' is required (YouTube, Instagram, Facebook or any link). 'title' and 'description' can be plain text or {\"kn\": \"...\", \"en\": \"...\"}. The platform icon is detected from the URL automatically.",
   "_example": { "title": { "kn": "ಮಂತ್ರ ಮಾಂಗಲ್ಯ ಮದುವೆ", "en": "A Mantra Mangalya wedding" }, "url": "https://www.youtube.com/watch?v=XXXXXXXXXXX", "description": { "kn": "", "en": "" } },
   "videos": [
-    { "title": { "kn": "1. ಮಂತ್ರ ಮಾಂಗಲ್ಯ ಮದುವೆ", "en": "A Mantra Mangalya wedding" }, "url": "https://youtu.be/QjXdD65tUdE?si=Iv8mgWTmFadWbSk9", "description": { "kn": "ಗಿರೀಶ್ ಮತ್ತು ಅನುಷಾ", "en": "Gireesh and Anusha" } },
-    { "title": { "kn": "2. ಮಂತ್ರ ಮಾಂಗಲ್ಯ ಮದುವೆ", "en": "A Mantra Mangalya wedding" }, "url": "https://youtu.be/Gl4QcMmhFsc?si=N6mzo-ZneHFuOan_", "description": { "kn": "", "en": "" } }
+  { "title": { "kn": "ಪುಟ್ಟ ಮತ್ತು ದಿವ್ಯ", "en": "Putta and Divya" }, "url": "https://youtu.be/FYyvQfzBTOY?si=sZecM0jqLg588r9e", "description": { "kn": "", "en": "" } },
+  { "title": { "kn": "ಚೇತನ್ ಮತ್ತು ವಿನುತಾ", "en": "Chethan and Vinutha" }, "url": "https://www.youtube.com/watch?v=Nt5TGO7fUzQ", "description": { "kn": "", "en": "" } },
+	{ "title": { "kn": "ಗಿರೀಶ್ ಮತ್ತು ಅನುಷಾ", "en": "Gireesh and Anusha" }, "url": "https://youtu.be/QjXdD65tUdE?si=Iv8mgWTmFadWbSk9", "description": { "kn": "", "en": "" } },
+	{ "title": { "kn": "ಚಂದ್ರಕಾಂತ್ ಮತ್ತು ವೀಣಾ", "en": "Chandrakant and Veena" }, "url": "https://www.youtube.com/watch?v=DZOlRGDYO8w", "description": { "kn": "", "en": "" } },
+	{ "title": { "kn": "ಕಾವ್ಯ ಮತ್ತು ಮಂಜುನಾಥ್", "en": "Kavya and Manunath" }, "url": "https://www.youtube.com/watch?v=mRtY7t4ECIM", "description": { "kn": "", "en": "" } },
+  { "title": { "kn": "ಹರ್ಷಿತಾ ಮತ್ತು ಪ್ರವೀಣ್", "en": "Harshitha and Praveen" }, "url": "https://www.instagram.com/reel/Df1ueokzBs-/?evlk=MTM5dzVvYXJwbm14bg==", "description": { "kn": "", "en": "" } },
+	{ "title": { "kn": "ಸಂದೀಪ್ ಮತ್ತು ಚಂದನ", "en": "Sandeep and Chandana" }, "url": "https://www.instagram.com/reel/DVs7-KIEWkQ/?hvrq=aWZobTVpbXo1Ynh0", "description": { "kn": "", "en": "" } }
   ]
 }

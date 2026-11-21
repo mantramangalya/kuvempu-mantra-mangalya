@@ -22,11 +22,12 @@ kuvempu-mantra-mangalya/
 ```
 
 ## 1. Images (any format: png, jpg, jpeg, webp, avif, gif, svg)
-Page images in `frontend/images/` keep these **base names**; the extension can be anything: `kuvempu`, `tejaswi-rajeshwari-maduve`, `tejaswi-rajeshwari-maduve-invitation`, `mantra-mangalya-book`,
-and the Home-page personality cards `kuvempu-home`, `tejaswi`, `basavanna`, `buddha`, `ambedkar`. Missing images just show a blank frame.
-Folder images: follow the name pattern shown above (logo / sample invitations) or use any name (HD photos, wedding photos). Add the file, push, done: the workflow regenerates `data/manifest.js` automatically.
-**Logo / favicon:** replace `frontend/favicon.svg` with your logo (or put e.g. `favicon.png` in `frontend/` and set `LOGO: "favicon.png"` in `js/config.js`).
-**More personalities (Home page only):** add one line to `PERSONALITIES` in `js/config.js` (file name without extension) and put the image in `images/`.
+- `frontend/images/home-page-images/` - Home personality cards: `kuvempu`, `tejaswi`, `basavanna`, `buddha`, `ambedkar` (add more in `PERSONALITIES` in `js/config.js`, file name without extension).
+- `frontend/images/about-page-images/` - About page: `kuvempu`, `tejaswi-rajeshwari-maduve`, `tejaswi-rajeshwari-maduve-invitation`, `mantra-mangalya-book`.
+- Folder galleries (any file name unless a pattern is shown): `mm-logo/` (mm-logo-1 ...), `hd-photos/`, `sample-mm-invitations/` (sample-mm-invitation-1 ...), `mm-marriage-photos/`, `mm-community-couples/`.
+- Book: put `kuvempu-mantra-mangalya-book.pdf` in `frontend/downloads/` (last section of the Downloads page).
+Missing images just show a blank frame. Push the files and the workflow regenerates `data/manifest.js` automatically.
+**Logo / favicon:** replace `frontend/favicon.svg` with your logo (or set `LOGO: "favicon.png"` in `js/config.js`).
 
 ## 2. Backend (Google Apps Script)
 1. Sign in as **mantramangalya1966@gmail.com** (mail is sent from the deploying account).
@@ -59,7 +60,7 @@ All links are relative, so it works under the repo sub-path.
 - Images: hover on any image to get Full view / Download; the viewer closes with the Close button, Esc or a click outside.
 
 ## Guidance page
-Tabs: Guidance · Marriage Code (Word/PDF, same file-name pattern `kuvempu-mantra-mangalya-vivaha-samhite-<kn|en>`) · Marriage Venue · Photo Gallery (Videos + Photos) · FAQ. Deep links: `/guidance/#code`, `#venue`, `#gallery`, `#faq`.
+Tabs (in order): Guidance · Photo Gallery (Videos + Photos) · Plan (Marriage Venue, plus Guest List and Expense Projection placeholders) · Marriage Code (Word/PDF, same file-name pattern `kuvempu-mantra-mangalya-vivaha-samhite-<kn|en>`) · FAQ. Deep links: `/guidance/#gallery`, `#plan`, `#code`, `#faq`.
 - **Edit guidance steps / Marriage Code text / FAQs:** `frontend/js/guide-content.js`. A FAQ may carry `links:[{to:'downloads/#invitations', kn:'..', en:'..'}]` (path from the site root).
 - **Videos:** add entries to `frontend/data/videos.json` (YouTube / Instagram / Facebook / any link). Photos: drop images into `frontend/images/mm-marriage-photos/`.
 - Every section on Guidance / Photo Gallery / Downloads can be expanded or collapsed; long lists are paginated.
@@ -67,3 +68,15 @@ Tabs: Guidance · Marriage Code (Word/PDF, same file-name pattern `kuvempu-mantr
 ## Downloads page
 Sections (in order): Logo, Person Photos, Sample Invitations, Marriage Code Templates - defined in `frontend/data/downloads.config.json`. Add a section by adding one object there and creating its folder. Deep links: `/downloads/#logo`, `#photos`, `#invitations`, `#code-formats`.
 - **PDF download** of the Marriage Code opens the browser print dialog; choose "Save as PDF" (keeps Kannada text perfectly shaped).
+
+## Community page
+- **Couples photos:** drop images (any name, any format) into `frontend/images/mm-community-couples/` and push.
+- **Community says:** edit `frontend/data/community-says.json` (message, husband, wife, place; plain text or `{kn,en}`).
+- **Join the Community form:** districts come from `frontend/data/districts.json`. Submissions go to the `CommunityPeopleInfo` sheet tab (`MM_COMMUNITY_SHEET_NAME` in `Code.gs`; auto-created with headers `Created Timestamp | Name | Spouse Name | Contact Number | Email | District | Marriage Date | Marriage Place | Experiance | Community Help | Language`). A repeated mobile number is rejected with a "use the Contact form" message.
+- **Created Timestamp** (IST, `DD-MM-YYYY HH:MM:SS AM/PM`) is written for both the Queries and CommunityPeopleInfo sheets. In the **Queries** tab rename the first header `Timestamp` to `Created Timestamp` (columns are matched by name).
+- **Email wording** for both acknowledgement mails lives in `frontend/data/email-templates.json`. The backend fetches it from the published site (`MM_SITE_URL` in `Code.gs`, cached 5 min), so edit it in git and push - no redeploy. After pasting the new `Code.gs` and `appsscript.json`, redeploy and authorise the new "connect to an external service" permission once.
+
+## Comments, analytics, expand/collapse
+- **Leave a Reply** (bottom of the Guidance page) writes to the `Comments` sheet tab (`MM_USER_COMMENTS_SHEET_NAME`; auto-created: `Created Timestamp | Name | User Comment | Status`). New rows get Status `Pending for Approval`; change a row's Status to `Approved` and it appears on the page (newest first, 5 per page). Redeploy `Code.gs` after updating.
+- **Google tag** (GTM-W94Q4SH7) sits right after `<head>` in every page - keep exactly one per page.
+- Every page except About has an Expand all / Collapse all button (Guidance: applies to the open tab).

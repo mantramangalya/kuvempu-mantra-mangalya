@@ -1,5 +1,1 @@
-Place these images here (WebP). Missing images simply show a blank frame:
-kuvempu.webp
-tejaswi-rajeshwari-maduve.webp
-tejaswi-rajeshwari-maduve-invitation.webp
-mantra-mangalya-book.webp
+Page images use these base names (any format): kuvempu, tejaswi-rajeshwari-maduve, tejaswi-rajeshwari-maduve-invitation, mantra-mangalya-book, kuvempu-home, tejaswi, basavanna, buddha, ambedkar. Sub-folders: mm-logo, hd-photos, sample-mm-invitations, mm-marriage-photos.

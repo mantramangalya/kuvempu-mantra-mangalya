@@ -1,0 +1,129 @@
+{
+ "_help": "Karnataka districts for the Join Community form. Add, remove or rename entries here (en is stored in the sheet; kn is shown in Kannada). Order here = order in the dropdown (sorted by name when shown).",
+ "districts": [
+  {
+   "en": "Bagalkot",
+   "kn": "ಬಾಗಲಕೋಟೆ"
+  },
+  {
+   "en": "Ballari",
+   "kn": "ಬಳ್ಳಾರಿ"
+  },
+  {
+   "en": "Belagavi",
+   "kn": "ಬೆಳಗಾವಿ"
+  },
+  {
+   "en": "Bengaluru Rural",
+   "kn": "ಬೆಂಗಳೂರು ಗ್ರಾಮಾಂತರ"
+  },
+  {
+   "en": "Bengaluru Urban",
+   "kn": "ಬೆಂಗಳೂರು ನಗರ"
+  },
+  {
+   "en": "Bengaluru South (Ramanagara)",
+   "kn": "ಬೆಂಗಳೂರು ದಕ್ಷಿಣ (ರಾಮನಗರ)"
+  },
+  {
+   "en": "Bidar",
+   "kn": "ಬೀದರ್"
+  },
+  {
+   "en": "Chamarajanagar",
+   "kn": "ಚಾಮರಾಜನಗರ"
+  },
+  {
+   "en": "Chikkaballapur",
+   "kn": "ಚಿಕ್ಕಬಳ್ಳಾಪುರ"
+  },
+  {
+   "en": "Chikkamagaluru",
+   "kn": "ಚಿಕ್ಕಮಗಳೂರು"
+  },
+  {
+   "en": "Chitradurga",
+   "kn": "ಚಿತ್ರದುರ್ಗ"
+  },
+  {
+   "en": "Dakshina Kannada",
+   "kn": "ದಕ್ಷಿಣ ಕನ್ನಡ"
+  },
+  {
+   "en": "Davanagere",
+   "kn": "ದಾವಣಗೆರೆ"
+  },
+  {
+   "en": "Dharwad",
+   "kn": "ಧಾರವಾಡ"
+  },
+  {
+   "en": "Gadag",
+   "kn": "ಗದಗ"
+  },
+  {
+   "en": "Hassan",
+   "kn": "ಹಾಸನ"
+  },
+  {
+   "en": "Haveri",
+   "kn": "ಹಾವೇರಿ"
+  },
+  {
+   "en": "Kalaburagi",
+   "kn": "ಕಲಬುರಗಿ"
+  },
+  {
+   "en": "Kodagu",
+   "kn": "ಕೊಡಗು"
+  },
+  {
+   "en": "Kolar",
+   "kn": "ಕೋಲಾರ"
+  },
+  {
+   "en": "Koppal",
+   "kn": "ಕೊಪ್ಪಳ"
+  },
+  {
+   "en": "Mandya",
+   "kn": "ಮಂಡ್ಯ"
+  },
+  {
+   "en": "Mysuru",
+   "kn": "ಮೈಸೂರು"
+  },
+  {
+   "en": "Raichur",
+   "kn": "ರಾಯಚೂರು"
+  },
+  {
+   "en": "Shivamogga",
+   "kn": "ಶಿವಮೊಗ್ಗ"
+  },
+  {
+   "en": "Tumakuru",
+   "kn": "ತುಮಕೂರು"
+  },
+  {
+   "en": "Udupi",
+   "kn": "ಉಡುಪಿ"
+  },
+  {
+   "en": "Uttara Kannada",
+   "kn": "ಉತ್ತರ ಕನ್ನಡ"
+  },
+  {
+   "en": "Vijayanagara",
+   "kn": "ವಿಜಯನಗರ"
+  },
+  {
+   "en": "Vijayapura",
+   "kn": "ವಿಜಯಪುರ"
+  },
+  {
+   "en": "Yadgir",
+   "kn": "ಯಾದಗಿರ್"
+  }
+ ]
+}

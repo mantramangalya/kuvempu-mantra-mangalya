@@ -1,0 +1,16 @@
+{
+ "_help": "Add one object per couple in 'items'. 'message' can be plain text or {\"kn\":\"..\",\"en\":\"..\"}; same for 'husband', 'wife' and 'place'.",
+ "_example": {
+  "message": {
+   "kn": "ನಮ್ಮ ಅನುಭವ…",
+   "en": "Our experience…"
+  },
+  "husband": "Husband name",
+  "wife": "Wife name",
+  "place": {
+   "kn": "ಮೈಸೂರು",
+   "en": "Mysuru"
+  }
+ },
+ "items": []
+}

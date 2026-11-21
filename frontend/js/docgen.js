@@ -77,9 +77,9 @@
   }
 
   /* ---------- Print / PDF ---------- */
-  function buildHtml(doc, siteName, lang) {
+  function buildHtml(doc, siteName, lang, title) {
     function e(s) { return xesc(s); }
-    return '<!DOCTYPE html><html lang="' + lang + '"><head><meta charset="utf-8"><title>' + e(doc.title) + '</title>' +
+    return '<!DOCTYPE html><html lang="' + lang + '"><head><meta charset="utf-8"><title>' + e(title || doc.title) + '</title>' +
       '<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Kannada:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">' +
       '<style>@page{size:A4;margin:18mm}body{font-family:"Noto Sans Kannada","Poppins",sans-serif;color:#2b1d16;line-height:1.75;font-size:12.5pt}' +
       'h1{text-align:center;color:#7a1f2b;font-size:22pt;margin:4px 0 14px}h2{color:#c2410c;font-size:15pt;margin:18px 0 6px;break-after:avoid}.site{text-align:center;color:#7a1f2b;font-weight:700;font-size:11pt}' +
@@ -94,16 +94,19 @@
       '<div><b>' + e(doc.sign.witnessTitle) + '</b></div>' + doc.sign.witnesses.map(function (w) { return '<div>' + e(w) + ' <span class="line"></span></div>'; }).join('') + '</div></body></html>';
   }
 
-  function printPdf(doc, siteName, lang) {
+  function printPdf(doc, siteName, lang, filename) {
     var f = document.createElement('iframe');
     f.setAttribute('aria-hidden', 'true');
     f.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden';
     document.body.appendChild(f);
-    var d = f.contentWindow.document; d.open(); d.write(buildHtml(doc, siteName, lang)); d.close();
+    var d = f.contentWindow.document; d.open(); d.write(buildHtml(doc, siteName, lang, filename)); d.close();
     var done = false;
     function go() {
       if (done) return; done = true;
+      var oldTitle = document.title;                       // browsers name the saved PDF after the page title
+      if (filename) document.title = filename;
       try { f.contentWindow.focus(); f.contentWindow.print(); } catch (e) {}
+      if (filename) setTimeout(function () { document.title = oldTitle; }, 500);
       setTimeout(function () { if (f.parentNode) f.parentNode.removeChild(f); }, 60000);
     }
     var ready = d.fonts && d.fonts.ready ? d.fonts.ready : Promise.resolve();

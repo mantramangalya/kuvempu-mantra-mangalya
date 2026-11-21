@@ -38,8 +38,9 @@
     }
     if (ftr) {
       ftr.outerHTML = '<footer class="site-footer"><div class="wrap"><div class="foot-grid">' +
-        '<div><h4 data-i18n="site.name"></h4><p data-i18n="foot.about"></p><p style="margin-top:8px"><a href="' + esc(C.BLOG_URL) + '" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right"></i> <span data-i18n="foot.blog"></span></a></p></div>' +
-        '<div><h4 data-i18n="foot.links"></h4><ul class="foot-links">' + NAV.map(function (n) { return '<li><a href="' + href(n[1]) + '" data-i18n="nav.' + n[0] + '"></a></li>'; }).join('') + '</ul></div>' +
+        '<div><h4 data-i18n="foot.blogs"></h4><div class="foot-social">' +
+        '<a href="' + esc(C.KUVEMPU_BLOG_URL) + '" target="_blank" rel="noopener"><i class="bi bi-journal-richtext"></i><span data-i18n="foot.blog.kuvempu"></span></a>' +
+        '<a href="' + esc(C.TEJASWI_BLOG_URL) + '" target="_blank" rel="noopener"><i class="bi bi-journal-richtext"></i><span data-i18n="foot.blog.tejaswi"></span></a></div></div>' +
         '<div><h4 data-i18n="foot.contact"></h4><div class="foot-social">' +
         '<a href="mailto:' + esc(C.EMAIL) + '"><i class="bi bi-envelope-fill"></i>' + esc(C.EMAIL) + '</a>' +
         '<a href="' + esc(C.INSTAGRAM_URL) + '" target="_blank" rel="noopener"><i class="bi bi-instagram"></i>' + esc(C.INSTAGRAM_HANDLE) + '</a>' +
@@ -58,23 +59,47 @@
     link.href = ROOT + f;
   }
 
-  /* ---------- Great personalities cards (top of every page) ---------- */
-  function initPersonalities() {
-    var list = C.PERSONALITIES || []; if (!list.length) return;
-    var holder = $('.page-hero .wrap'), box = document.createElement('div');
-    box.className = 'pers'; box.id = 'personalities'; box.setAttribute('role', 'list');
-    if (holder) holder.appendChild(box);
-    else {
-      var hero = $('#heroSlider'); if (!hero) return;
-      var band = document.createElement('section'); band.className = 'pers-band';
-      band.innerHTML = '<div class="wrap"></div>'; $('.wrap', band).appendChild(box);
-      hero.insertAdjacentElement('afterend', band);
+  /* ---------- Image helpers: any format (png / jpg / webp ...), file-name pattern decides ---------- */
+  var EXTS = ['webp', 'jpg', 'jpeg', 'png', 'avif', 'gif', 'svg'], EXT_RE = /\.(webp|jpe?g|png|gif|avif|svg|bmp)$/i;
+  function imgFile(b) {                         // 'kuvempu' or 'kuvempu.webp' -> real file name
+    var raw = String(b), base = raw.replace(EXT_RE, ''), m = (window.MM_MANIFEST && window.MM_MANIFEST.images) || {};
+    return m[base] || (EXT_RE.test(raw) ? raw : base + '.webp');
+  }
+  function imgSrc(b) { return ROOT + 'images/' + imgFile(b); }
+  function imgFail(img) {
+    var c = img.closest('.pers-card'); if (c) { c.remove(); return; }
+    var f = img.closest('.img-frame'); if (f) { f.classList.add('noimg'); f.removeAttribute('data-full'); }
+    img.remove();
+  }
+  function imgErr(img) {                        // tries the other image extensions, then gives up
+    var base = img.getAttribute('data-base'); if (!base) return imgFail(img);
+    var tried = (img.getAttribute('data-tried') || '').split(',').filter(Boolean), cur = (img.getAttribute('src') || '').split('.').pop().toLowerCase();
+    if (tried.indexOf(cur) < 0) tried.push(cur);
+    var next = EXTS.filter(function (e) { return tried.indexOf(e) < 0; })[0];
+    if (!next) return imgFail(img);
+    img.setAttribute('data-tried', tried.join(','));
+    var file = base + '.' + next, url = ROOT + 'images/' + file; img.src = url;
+    var h = img.closest('[data-full]');
+    if (h) {
+      h.dataset.full = url; h.dataset.dl = url; h.dataset.name = file;
+      var a = h.querySelector('a[data-act="dl"]'); if (a) { a.href = url; a.setAttribute('download', file); }
     }
+  }
+
+  /* ---------- Great personalities cards (Home page only) ---------- */
+  function initPersonalities() {
+    var list = C.PERSONALITIES || []; if (!list.length || PAGE !== 'home') return;
+    var hero = $('#heroSlider'); if (!hero) return;
+    var box = document.createElement('div');
+    box.className = 'pers'; box.id = 'personalities'; box.setAttribute('role', 'list');
+    var band = document.createElement('section'); band.className = 'pers-band';
+    band.innerHTML = '<div class="wrap"></div>'; $('.wrap', band).appendChild(box);
+    hero.insertAdjacentElement('afterend', band);
     function draw() {
       box.innerHTML = list.map(function (p, i) {
-        var src = ROOT + 'images/' + p.img, name = p[lang] || p.kn || p.en || '';
-        return '<figure class="pers-card" role="listitem" style="animation-delay:' + (i * 80) + 'ms" data-full="' + esc(src) + '" data-name="' + esc(p.img) + '" data-dl="' + esc(src) + '" data-local="1" title="' + esc(name) + '">' +
-          '<div class="pers-img"><img src="' + esc(src) + '" alt="' + esc(name) + '" loading="lazy" decoding="async" onerror="var c=this.closest(\'.pers-card\');if(c)c.remove()"></div><figcaption>' + esc(name) + '</figcaption></figure>';
+        var file = imgFile(p.img), src = ROOT + 'images/' + file, name = p[lang] || p.kn || p.en || '';
+        return '<figure class="pers-card" role="listitem" style="animation-delay:' + (i * 80) + 'ms" data-full="' + esc(src) + '" data-name="' + esc(file) + '" data-dl="' + esc(src) + '" data-local="1" title="' + esc(name) + '">' +
+          '<div class="pers-img"><img src="' + esc(src) + '" data-base="' + esc(String(p.img).replace(EXT_RE, '')) + '" alt="' + esc(name) + '" loading="lazy" decoding="async" onerror="MM.imgErr(this)"></div><figcaption>' + esc(name) + '</figcaption></figure>';
       }).join('');
     }
     draw(); document.addEventListener('mm:lang', draw);
@@ -154,10 +179,10 @@
     return '<div class="img-actions"><button type="button" class="ia-btn" data-act="view" title="' + v + '" aria-label="' + v + '"><i class="bi bi-arrows-fullscreen"></i></button>' +
       '<a class="ia-btn" data-act="dl" href="' + esc(dl) + '" ' + (local ? 'download="' + esc(name) + '"' : 'target="_blank" rel="noopener"') + ' title="' + d + '" aria-label="' + d + '"><i class="bi bi-download"></i></a></div>';
   }
-  function imgBlock(file, alt, cls, cap) {
-    var src = ROOT + 'images/' + file;
+  function imgBlock(name, alt, cls, cap) {
+    var file = imgFile(name), src = ROOT + 'images/' + file;
     return '<figure class="img-frame ' + (cls || '') + '" data-full="' + esc(src) + '" data-name="' + esc(file) + '" data-dl="' + esc(src) + '" data-local="1">' +
-      '<img src="' + esc(src) + '" alt="' + esc(alt) + '" loading="lazy" decoding="async" onerror="var f=this.parentNode;f.classList.add(\'noimg\');f.removeAttribute(\'data-full\');this.remove()">' +
+      '<img src="' + esc(src) + '" data-base="' + esc(String(name).replace(EXT_RE, '')) + '" alt="' + esc(alt) + '" loading="lazy" decoding="async" onerror="MM.imgErr(this)">' +
       (cap ? '<figcaption>' + esc(cap) + '</figcaption>' : '') + actions(src, file, true) + '</figure>';
   }
 
@@ -367,14 +392,22 @@
     void mc;
   }
 
+  /* ---------- Collapsible sections (.c-sec > .c-head + .c-body), used on Guidance / Downloads ---------- */
+  function initCollapsibles() {
+    function flip(h) { var sec = h.closest('.c-sec'); if (!sec) return; var shut = sec.classList.toggle('shut'); h.setAttribute('aria-expanded', !shut); }
+    document.addEventListener('click', function (e) { var h = e.target.closest('.c-head'); if (h && !e.target.closest('a')) flip(h); });
+    document.addEventListener('keydown', function (e) { var h = e.target.closest && e.target.closest('.c-head'); if (h && h === e.target && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); flip(h); } });
+  }
+
   window.MM = {
+    imgFile: imgFile, imgSrc: imgSrc, imgErr: imgErr, EXT_RE: EXT_RE,
     t: t, lang: function () { return lang; }, esc: esc, $: $, $$: $$, ROOT: ROOT, actions: actions,
     apiGet: apiGet, cached: cached, apiReady: apiReady, toggle: toggle, observe: observe, applyI18n: applyI18n
   };
 
   /* ---------- Boot ---------- */
   function boot() {
-    buildLayout(); setFavicon(); initChrome(); initViewer(); initPersonalities(); applyI18n();
+    buildLayout(); setFavicon(); initChrome(); initViewer(); initCollapsibles(); initPersonalities(); applyI18n();
     initSlider(); initAbout(); initDownloads(); initCommunity(); initContact();
     observe();
   }

@@ -5,14 +5,14 @@
     var M = window.MM;
     if (!M || !document.getElementById('gTabs')) return;
     var t = M.t, esc = M.esc, $ = M.$, $$ = M.$$;
-    var TABS = ['guidance', 'code', 'venue', 'samples', 'faq'];
+    var TABS = ['guidance', 'code', 'venue', 'gallery', 'faq'];
     var inited = {}, firstShow = true;
 
     function L() { return M.lang(); }
     function pick(o) { if (o == null) return ''; if (typeof o === 'string') return o; return o[L()] || o.kn || o.en || ''; }
 
     /* ---------- tabs ---------- */
-    function current() { var h = (location.hash || '').slice(1); return TABS.indexOf(h) > -1 ? h : 'guidance'; }
+    function current() { var h = (location.hash || '').slice(1); if (h === 'samples') h = 'gallery'; return TABS.indexOf(h) > -1 ? h : 'guidance'; }
     function show(tab, scroll) {
       TABS.forEach(function (k) {
         var on = k === tab, b = $('#tabbtn-' + k), p = $('#tab-' + k);
@@ -57,16 +57,18 @@
           }).join('') + '</div>';
         }
         var call = p.callout ? '<div class="callout"><i class="bi ' + p.callout.icon + '"></i><span>' + esc(p.callout[l]) + '</span></div>' : '';
-        return '<section class="phase reveal"><header class="phase-head"><span class="phase-n">' + (n + 1) + '</span><div><h3>' + esc(p[l].title) + '</h3><p>' + esc(p[l].sub) + '</p></div><i class="bi ' + p.icon + ' phase-ic"></i></header>' + body + call + '</section>';
+        return '<section class="phase c-sec reveal" id="ph-' + esc(p.id || n) + '"><div class="phase-head c-head" role="button" tabindex="0" aria-expanded="true"><span class="phase-n">' + (n + 1) + '</span><div><h3>' + esc(p[l].title) + '</h3><p>' + esc(p[l].sub) + '</p></div><i class="bi ' + p.icon + ' phase-ic"></i><i class="bi bi-chevron-down chev"></i></div><div class="c-body">' + body + call + '</div></section>';
       }).join('');
+      var shut = $$('#tab-guidance .c-sec.shut').map(function (x) { return x.id; });
       $('#tab-guidance').innerHTML = h; M.observe($('#tab-guidance'));
+      shut.forEach(function (id) { var x = document.getElementById(id); if (x) { x.classList.add('shut'); $('.c-head', x).setAttribute('aria-expanded', 'false'); } });
     }
 
     /* ---------- 2. Marriage Code ---------- */
     function renderCode() {
       var d = window.MM_CODE[L()];
       var h = '<div class="code-dl"><div class="code-dl-t"><i class="bi bi-cloud-arrow-down-fill"></i><b>' + esc(t('code.dl.title')) + '</b></div><div class="code-dl-b">' +
-        '<button type="button" class="btn btn-primary" data-dl="docx"><i class="bi bi-file-earmark-word"></i><span>' + esc(t('code.dl.word')) + '</span></button>' +
+        '<button type="button" class="btn btn-light" data-dl="docx"><i class="bi bi-file-earmark-word"></i><span>' + esc(t('code.dl.word')) + '</span></button>' +
         '<button type="button" class="btn btn-light" data-dl="pdf"><i class="bi bi-file-earmark-pdf"></i><span>' + esc(t('code.dl.pdf')) + '</span></button></div>' +
         '<small>' + esc(t('code.pdf.note')) + '</small></div>';
       h += '<div class="code-bg"><h3><i class="bi bi-journal-bookmark"></i>' + esc(d.bgTitle) + '</h3>' + d.background.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') + '</div>';
@@ -79,9 +81,9 @@
       $('#tab-code').innerHTML = h;
       $$('#tab-code [data-dl]').forEach(function (b) {
         b.addEventListener('click', function () {
-          var doc = window.MM_CODE[L()], site = t('site.name');
-          if (b.dataset.dl === 'docx') window.MM_DOC.downloadDocx(doc, site, 'kuvempu-mantra-mangalya-vivaha-samhite-' + L() + '.docx');
-          else window.MM_DOC.printPdf(doc, site, L());
+          var doc = window.MM_CODE[L()], site = t('site.name'), base = 'kuvempu-mantra-mangalya-vivaha-samhite-' + L();
+          if (b.dataset.dl === 'docx') window.MM_DOC.downloadDocx(doc, site, base + '.docx');
+          else window.MM_DOC.printPdf(doc, site, L(), base);
         });
       });
     }
@@ -106,14 +108,11 @@
       var h = '<p class="v-intro">' + esc(t('v.intro')) + '</p><div class="v-tools">' +
         '<label class="search"><i class="bi bi-search"></i><span class="sr-only">' + esc(t('v.search')) + '</span><input id="vQ" type="search" placeholder="' + esc(t('v.search')) + '" value="' + esc(V.q) + '"></label>' +
         '<select id="vD" aria-label="' + esc(t('v.district')) + '"><option value="">' + esc(t('v.all')) + '</option>' + districts.map(function (d) { return '<option' + (d === V.district ? ' selected' : '') + ' value="' + esc(d) + '">' + esc(d) + '</option>'; }).join('') + '</select>' +
-        '<div class="v-sort"><select id="vS" aria-label="' + esc(t('v.sort')) + '">' + COLS.map(function (c) { return '<option value="' + c[0] + '"' + (c[0] === V.key ? ' selected' : '') + '>' + esc(t('v.sort')) + ': ' + esc(t(c[1])) + '</option>'; }).join('') + '</select>' +
-        '<button type="button" class="dir-btn" id="vDir" aria-label="Sort direction"><i class="bi bi-sort-' + (V.dir > 0 ? 'down' : 'up') + '"></i></button></div></div>' +
+        '</div>' +
         '<div id="vOut"></div>';
       $('#tab-venue').innerHTML = h;
       $('#vQ').addEventListener('input', function (e) { V.q = e.target.value.trim().toLowerCase(); V.page = 1; drawVenue(); });
       $('#vD').addEventListener('change', function (e) { V.district = e.target.value; V.page = 1; drawVenue(); });
-      $('#vS').addEventListener('change', function (e) { V.key = e.target.value; V.page = 1; drawVenue(); });
-      $('#vDir').addEventListener('click', function () { V.dir *= -1; this.innerHTML = '<i class="bi bi-sort-' + (V.dir > 0 ? 'down' : 'up') + '"></i>'; drawVenue(); });
       V.q = V.q || '';
     }
     function pageList(cur, total) {
@@ -144,42 +143,18 @@
         '<button type="button" data-p="' + (V.page + 1) + '"' + (V.page === pages ? ' disabled' : '') + ' aria-label="' + esc(t('v.next')) + '"><i class="bi bi-chevron-right"></i></button></div>' +
         '<label class="pg-size">' + esc(t('v.rows')) + ' <select id="vSize">' + [10, 25, 50].map(function (n) { return '<option' + (n === V.size ? ' selected' : '') + '>' + n + '</option>'; }).join('') + '</select></label></div>';
       out.innerHTML = h;
-      $$('#vOut th button').forEach(function (b) { b.addEventListener('click', function () { if (V.key === b.dataset.k) V.dir *= -1; else { V.key = b.dataset.k; V.dir = 1; } $('#vS').value = V.key; $('#vDir').innerHTML = '<i class="bi bi-sort-' + (V.dir > 0 ? 'down' : 'up') + '"></i>'; drawVenue(); }); });
+      $$('#vOut th button').forEach(function (b) { b.addEventListener('click', function () { if (V.key === b.dataset.k) V.dir *= -1; else { V.key = b.dataset.k; V.dir = 1; } drawVenue(); }); });
       $$('#vOut .pg-btns button').forEach(function (b) { b.addEventListener('click', function () { V.page = +b.dataset.p; drawVenue(); $('#tab-venue').scrollIntoView({ behavior: 'smooth', block: 'start' }); }); });
       $('#vSize').addEventListener('change', function (e) { V.size = +e.target.value; V.page = 1; drawVenue(); });
     }
 
-    /* ---------- 4. Samples & Links ---------- */
-    var S = { videos: undefined, cfg: undefined, man: undefined };
-    var IMG = /\.(webp|jpe?g|png|gif|avif|svg)$/i, PDF = /\.pdf$/i, STEP = 12;
+    /* ---------- 4. Photo Gallery (Videos + Photos) ---------- */
+    var B = window.MM_BROWSE, S = { videos: undefined, photos: undefined };
+    var PHOTOS = { id: 'g-photos', dir: 'images/mm-marriage-photos', kind: 'images', icon: 'bi-images', caption: false };
     function getJson(path) { return fetch(M.ROOT + path).then(function (r) { if (!r.ok) throw new Error('http'); return r.json(); }).catch(function () { return null; }); }
-    function loadSamples() {
-      $('#tab-samples').innerHTML = '<div class="skeleton"></div>';
-      Promise.all([getJson('data/videos.json'), getJson('data/samples.config.json'), getJson('data/manifest.json')]).then(function (r) {
-        S.videos = r[0]; S.cfg = r[1]; S.man = r[2];
-        if (S.cfg && !S.man) return probeAll(S.cfg).then(function (m) { S.man = m; });   // no manifest yet: find files by their numbered names
-      }).then(drawSamples);
-    }
-    /* Fallback only: looks for <prefix>1.<ext>, <prefix>2.<ext> ... and stops after 2 missing numbers */
-    var PROBE_EXT = ['webp', 'jpg', 'jpeg', 'png', 'pdf', 'docx', 'doc'];
-    function exists(url) { return fetch(url, { method: 'HEAD' }).then(function (r) { return r.ok; }).catch(function () { return false; }); }
-    function probeSection(cfg) {
-      var items = [], misses = 0;
-      function step(i) {
-        if (misses >= 2 || i > 60 || !cfg.prefix) return Promise.resolve(items);
-        return Promise.all(PROBE_EXT.map(function (e) { var f = cfg.prefix + i + '.' + e; return exists(M.ROOT + cfg.dir + '/' + f).then(function (ok) { return ok ? f : null; }); })).then(function (res) {
-          var hit = res.filter(Boolean)[0];
-          if (hit) { items.push({ file: hit }); misses = 0; } else misses++;
-          return step(i + 1);
-        });
-      }
-      return step(1);
-    }
-    function probeAll(cfg) {
-      var secs = cfg.sections || [];
-      return Promise.all(secs.map(probeSection)).then(function (lists) {
-        var out = {}; secs.forEach(function (s, i) { out[s.id] = lists[i]; }); return { sections: out };
-      });
+    function loadGallery() {
+      $('#tab-gallery').innerHTML = '<div class="skeleton"></div>';
+      Promise.all([getJson('data/videos.json'), B.listDir(PHOTOS)]).then(function (r) { S.videos = r[0] || {}; S.photos = r[1]; drawGallery(); });
     }
     function platform(u) {
       var x = String(u).toLowerCase();
@@ -190,70 +165,31 @@
     }
     function ytThumb(u) { var m = String(u).match(/(?:youtu\.be\/|[?&]v=|\/shorts\/|\/embed\/)([\w-]{11})/); return m ? 'https://img.youtube.com/vi/' + m[1] + '/hqdefault.jpg' : ''; }
     function safeUrl(u) { return /^https?:\/\//i.test(String(u)) ? u : ''; }
-    function itemLabel(file, cfg) {
-      var base = file.replace(/\.[^.]+$/, ''), m = base.match(/(\d+)$/), lbl = cfg.itemLabel ? pick(cfg.itemLabel) : '';
-      if (lbl && m) return lbl + ' ' + m[1];
-      return base.replace(/[-_]+/g, ' ');
-    }
-    function fmtSize(b) { if (!b) return ''; return b > 1048576 ? (b / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(b / 1024)) + ' KB'; }
-
     function videoCard(v) {
       var url = safeUrl(v.url); if (!url) return '';
       var p = platform(url), th = p.c === 'yt' ? ytThumb(url) : '', title = pick(v.title) || p.n;
       return '<a class="vid" href="' + esc(url) + '" target="_blank" rel="noopener"><div class="vid-th ' + p.c + '">' + (th ? '<img src="' + esc(th) + '" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">' : '') + '<i class="bi ' + p.i + ' vid-pl"></i></div>' +
         '<div class="vid-b"><span class="vid-badge ' + p.c + '"><i class="bi ' + p.i + '"></i>' + esc(p.n) + '</span><h4>' + esc(title) + '</h4>' + (v.description ? '<p>' + esc(pick(v.description)) + '</p>' : '') + '<span class="mini-link">' + esc(t('s.watch')) + ' <i class="bi bi-box-arrow-up-right"></i></span></div></a>';
     }
-    function itemCard(it, base, cfg) {
-      var src = M.ROOT + base + '/' + encodeURIComponent(it.file), label = itemLabel(it.file, cfg);
-      if (IMG.test(it.file)) {
-        return '<div class="gal-item" data-full="' + esc(src) + '" data-name="' + esc(it.file) + '" data-dl="' + esc(src) + '" data-local="1"><img src="' + esc(src) + '" alt="' + esc(label) + '" loading="lazy" decoding="async"><span class="gal-cap">' + esc(label) + '</span>' + M.actions(src, it.file, true) + '</div>';
-      }
-      var icon = PDF.test(it.file) ? 'bi-file-earmark-pdf' : /\.docx?$/i.test(it.file) ? 'bi-file-earmark-word' : 'bi-file-earmark-text';
-      return '<article class="card file hover"><div class="thumb"><i class="bi ' + icon + '"></i></div><h3>' + esc(label) + '</h3><div class="meta">' + esc(it.file.split('.').pop().toUpperCase()) + (it.size ? ' · ' + esc(fmtSize(it.size)) : '') + '</div><div class="row">' +
-        (PDF.test(it.file) ? '<a class="btn btn-light" href="' + esc(src) + '" target="_blank" rel="noopener"><i class="bi bi-eye"></i>' + esc(t('dl.view')) + '</a>' : '') +
-        '<a class="btn btn-primary" href="' + esc(src) + '" download="' + esc(it.file) + '"><i class="bi bi-download"></i>' + esc(t('dl.download')) + '</a></div></article>';
-    }
-
-    function section(id, icon, title, items, renderItem, kind) {
-      var n = items.length, body;
-      if (!n) body = '<div class="na"><i class="bi bi-inbox"></i><p>' + esc(t('s.na')) + '</p></div>';
-      else body = '<div class="' + (kind === 'img' ? 'masonry' : kind === 'vid' ? 'vid-grid' : 'cards c3') + '" id="grid-' + id + '"></div><div class="more-wrap" id="more-' + id + '"></div>';
-      return '<section class="smp reveal in" id="smp-' + id + '"><header class="smp-h"><span class="acc-ic"><i class="bi ' + icon + '"></i></span><h3>' + esc(title) + '</h3><span class="count">' + n + '</span></header>' + body + '</section>';
-    }
-    function fillIncremental(id, items, renderItem, kind) {
-      var grid = $('#grid-' + id); if (!grid) return;
-      var shown = 0, more = $('#more-' + id);
-      function next() {
-        var chunk = items.slice(shown, shown + STEP); shown += chunk.length;
-        var html = chunk.map(renderItem).join('');
-        if (kind === 'img') { var tmp = document.createElement('div'); tmp.innerHTML = html; while (tmp.firstChild) grid.appendChild(tmp.firstChild); }
-        else grid.insertAdjacentHTML('beforeend', html);
-        more.innerHTML = shown < items.length ? '<button type="button" class="btn btn-light"><i class="bi bi-plus-circle"></i><span>' + esc(t('s.more')) + ' (' + (items.length - shown) + ')</span></button>' : '';
-        var b = $('button', more); if (b) b.addEventListener('click', next);
-      }
-      next();
-    }
-    function drawSamples() {
-      var host = $('#tab-samples'), vids = (S.videos && S.videos.videos || []).filter(function (v) { return v && safeUrl(v.url); });
-      var html = '', jobs = [];
-      html += section('videos', 'bi-play-btn-fill', t('s.videos'), vids, null, 'vid');
-      jobs.push(['videos', vids, videoCard, 'vid']);
-      var secs = S.cfg && S.cfg.sections || [];
-      secs.forEach(function (cfg) {
-        var items = (S.man && S.man.sections && S.man.sections[cfg.id]) || [];
-        var kind = items.length && items.every(function (x) { return IMG.test(x.file); }) ? 'img' : 'files';
-        html += section(cfg.id, cfg.icon || 'bi-folder2-open', pick(cfg.title), items, null, kind);
-        jobs.push([cfg.id, items, function (it) { return itemCard(it, cfg.dir, cfg); }, kind]);
-      });
-      host.innerHTML = html;
-      jobs.forEach(function (j) { if (j[1].length) fillIncremental(j[0], j[1], j[2], j[3]); });
+    function drawGallery() {
+      var host = $('#tab-gallery'), vids = (S.videos.videos || []).filter(function (v) { return v && safeUrl(v.url); }), photos = S.photos || [];
+      var shut = $$('#tab-gallery .c-sec.shut').map(function (x) { return x.id; });
+      host.innerHTML = B.shell('g-videos', 'bi-play-btn-fill', t('s.videos'), vids.length, vids.length ? '<div class="pg-box" id="vidBox"></div>' : B.na()) +
+        B.shell('g-photos', 'bi-images', t('s.photos'), photos.length, photos.length ? '<div class="pg-box" id="photoBox"></div>' : B.na());
+      if (vids.length) B.paged($('#vidBox'), vids, 6, videoCard, 'cards');
+      if (photos.length) B.paged($('#photoBox'), photos, 12, function (it) { return B.itemCard(it, PHOTOS); }, 'masonry');
+      shut.forEach(function (id) { var x = document.getElementById(id); if (x) { x.classList.add('shut'); $('.c-head', x).setAttribute('aria-expanded', 'false'); } });
     }
 
     /* ---------- 5. FAQ ---------- */
+    function faqLinks(f) {
+      if (!f.links || !f.links.length) return '';
+      return '<div class="faq-links">' + f.links.map(function (x) { return '<a class="mini-link" href="' + esc(M.ROOT + x.to) + '">' + esc(x[L()]) + ' <i class="bi bi-arrow-right"></i></a>'; }).join('') + '</div>';
+    }
     function renderFaq() {
       var l = L();
       $('#tab-faq').innerHTML = '<p class="faq-intro">' + esc(t('g.faq.intro')) + '</p>' + window.MM_FAQ.map(function (f) {
-        return '<article class="acc"><button class="acc-head" aria-expanded="false"><span class="acc-ic"><i class="bi bi-patch-question"></i></span><span class="acc-title">' + esc(f.q[l]) + '</span><i class="bi bi-chevron-down chev"></i></button><div class="acc-panel"><div class="acc-inner"><div class="acc-body prose"><p>' + esc(f.a[l]) + '</p></div></div></div></article>';
+        return '<article class="acc"><button class="acc-head" aria-expanded="false"><span class="acc-ic"><i class="bi bi-patch-question"></i></span><span class="acc-title">' + esc(f.q[l]) + '</span><i class="bi bi-chevron-down chev"></i></button><div class="acc-panel"><div class="acc-inner"><div class="acc-body prose"><p>' + esc(f.a[l]) + '</p>' + faqLinks(f) + '</div></div></div></article>';
       }).join('');
       $$('#tab-faq .acc').forEach(function (a) { $('.acc-head', a).addEventListener('click', function () { M.toggle(a); }); });
     }
@@ -261,7 +197,7 @@
     var INIT = {
       guidance: renderGuide, code: renderCode, faq: renderFaq,
       venue: function () { loadVenues(); drawVenue(true); },
-      samples: loadSamples
+      gallery: loadGallery
     };
 
     document.addEventListener('mm:lang', function () {
@@ -269,7 +205,7 @@
       if (inited.code) renderCode();
       if (inited.faq) renderFaq();
       if (inited.venue) drawVenue(true);
-      if (inited.samples && S.cfg !== undefined) drawSamples();
+      if (inited.gallery && S.videos !== undefined) drawGallery();
     });
 
     show(current(), false);
